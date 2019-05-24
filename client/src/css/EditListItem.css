@@ -1,0 +1,104 @@
+.list-item-edit-screen {
+    margin: 2vw;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.edit-task-header-icon {
+    float: right;
+    right: 0;
+    position: relative;
+    transition: all .5s ease;
+    cursor: pointer;
+}
+
+.edit-task-header-icon:hover {
+    opacity: 1;
+    right: 0px;
+    cursor: pointer;
+}
+
+.list-item-edit-container {
+    overflow: auto;
+    min-width: 420px;
+}
+
+.list-item-edit-screen table {
+    width: 100%;
+}
+
+.list-item-edit-screen td {
+    padding: 10px 0;
+    width: 30%;
+}
+
+.list-item-edit-screen label {
+    margin-bottom: 0;
+}
+
+.list-item-edit-screen .edit-task-input {
+    width: 95%;
+    padding: 5px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid rgb(221, 221, 221);
+}
+
+span.incomplete-item, span.completed-item, span.starred-item, span.unstarred-item {
+    margin: 10px;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+span.incomplete-item, span.unstarred-item {
+    color: gray;
+}
+
+span.completed-item {
+    color: green;
+}
+
+span.starred-item {
+    color: goldenrod;
+}
+
+.edit-task-buttons {
+    text-align: center;
+}
+
+.edit-task-btn {
+    margin: 10px 5px;
+}
+
+.list-item-edit-container .checkbox-container {
+    vertical-align: middle;
+}
+
+.list-item-edit-screen .star-item {
+    position: relative;
+    right: 0;
+}
+
+@media screen and (max-width: 1200px) {
+    .list-item-edit-screen td {
+        font-size: 1.3vw;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .list-item-edit-screen td {
+        font-size: 2vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .list-item-edit-container {
+        font-size: 2.5vw;
+    }
+
+    .list-item-edit-screen td {
+        font-size: 2.5vw;
+    }
+}

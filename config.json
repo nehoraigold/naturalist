@@ -4,6 +4,10 @@
   },
   "client": {
     "buildPath": "client/dist",
-    "srcPath": "client/src"
+    "srcPath": "client/src",
+    "publicPath": "client/public"
+  },
+  "run": {
+    "mode": "debug"
   }
 }

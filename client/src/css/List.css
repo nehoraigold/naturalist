@@ -1,0 +1,56 @@
+.list {
+    width:100%;
+    display:inline-block;
+}
+
+h3.list-title {
+    padding:5px 10px;
+}
+
+.list-title {
+    color:white;
+    font-size:40px;
+    background:transparent;
+    border:0;
+    outline:none;
+}
+
+.list-title::placeholder {
+    font-style:italic;
+}
+
+.list-title::-webkit-input-placeholder {
+    font-style:italic;
+}
+
+.list-title:-moz-placeholder {
+    font-style:italic;
+}
+
+.list-title::-moz-placeholder {
+    font-style:italic;
+}
+
+.list-title .list-title-icon {
+    float:right;
+    opacity:0;
+    position:relative;
+    transform: scale(.7,.7);
+    right: -10px;
+    transition: all .5s ease;
+}
+
+.list-title:hover .list-title-icon {
+    opacity:1;
+    right:0px;
+    cursor: pointer;
+}
+
+.list-title .list-title-icon:hover {
+    color:rgb(221,221,221);
+}
+
+.no-items-completed-message {
+    margin-left:20px;
+    font-style: italic;
+}

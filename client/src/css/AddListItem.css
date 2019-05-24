@@ -1,0 +1,17 @@
+.add-item {
+    outline:none;
+    border:0;
+    width:80%;
+}
+
+.add-button {
+    position:absolute;
+    top:15px;
+    right:20px;
+}
+
+@media screen and (max-width:1000px) {
+    .add-button {
+        top: auto;
+    }
+}

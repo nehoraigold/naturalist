@@ -1,16 +1,17 @@
 //region imports
-const express = require('express');
-const path = require('path');
+const express    = require('express');
+const path       = require('path');
 const bodyParser = require('body-parser');
-const config = require('../config.json');
+const config     = require('../config.json');
 //endregion
 
-const app  = express();
+const app = express();
 
 app.use(bodyParser.json());
 app.use(express.static(path.resolve(__dirname, '../', config.client.buildPath)));
 
 app.get('*', (req, res) => {
+	console.log("REQUEST -", req);
 	res.sendFile(path.resolve(__dirname, '../', config.client.buildPath) + "/index.html");
 });
 

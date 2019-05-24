@@ -1,0 +1,181 @@
+.list .card {
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    width: calc(100% - 6px);
+    margin: 2px;
+}
+
+.list .card .card-body {
+    display: flex;
+    align-items: center;
+}
+
+.list .card.completed {
+    opacity: 0.8;
+    text-decoration: line-through;
+}
+
+.list .card span {
+    display: inline-block;
+    padding: 0 0.5rem;
+}
+
+.list .card label {
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: default;
+}
+
+.checkbox-container {
+    height: 15px;
+    width: 15px;
+    border-radius: 3px;
+    background-color: rgb(221, 221, 221);
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.checkbox-container .checkmark {
+    vertical-align: top;
+}
+
+.checkbox-container .checkmark.unchecked {
+    display: none;
+}
+
+.input-checkbox {
+    opacity: 0;
+    cursor: pointer;
+}
+
+.item-due-date {
+    position: absolute;
+    right: 70px;
+    font-style: italic;
+}
+
+.due-date-complete {
+    text-decoration: line-through;
+}
+
+.due-date-past {
+    color: red;
+}
+
+.star-item {
+    position: absolute;
+    right: 30px;
+    display: inline-block;
+}
+
+.far.fa-star {
+    color: rgb(221, 221, 221);
+}
+
+.far.fa-star:hover {
+    color: goldenrod;
+}
+
+.fas.fa-star {
+    color: goldenrod;
+}
+
+
+.star-item .star {
+    cursor: pointer;
+    transition: all .5s ease;
+}
+
+.list .card .star {
+    opacity: 0;
+}
+
+.star-item .star.starred {
+    opacity: 1;
+}
+
+.list .card:hover .star-item .star {
+    opacity: 1;
+}
+
+.list .card:hover .edit-item {
+    opacity: 1;
+    transform: scale(1, 1);
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.list .card .edit-item {
+    opacity: 0;
+    transform: scale(.1, .1);
+    position: absolute;
+    right: 10px;
+    padding: 0;
+    pointer-events: none;
+    transition: all .5s ease;
+}
+
+.edit-item-dot {
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+    margin: 3px 9px;
+    transition: background-color .5s ease;
+}
+
+.card .card-body .task-container, .card .card-body .checkbox-container {
+    display: inline-block;
+    margin: 0 0.5rem;
+}
+
+.card .card-body .task-container {
+    width: 78%;
+}
+
+@media screen and (max-width: 1000px) {
+    .card {
+        height: auto;
+        font-size: 2vw;
+    }
+
+    .card button {
+        font-size: 2vw;
+    }
+
+    .item-due-date {
+        font-size: 1.7vw;
+    }
+
+    .checkbox-container {
+        height: 2vw;
+        width: 2vw;
+    }
+
+    .checkbox-container .checkmark {
+        vertical-align: middle;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        height: auto;
+        font-size: 2.5vw;
+    }
+
+    .card button {
+        font-size: 2.5vw;
+    }
+
+    .checkbox-container {
+        height: 2.5vw;
+        width: 2.5vw;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .item-due-date {
+        display: none;
+    }
+}

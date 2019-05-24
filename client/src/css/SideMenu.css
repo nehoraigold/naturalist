@@ -1,0 +1,42 @@
+.side-menu {
+    display:inline-block;
+    width:15%;
+    max-width: 200px;
+    height:100%;
+    overflow-y:auto;
+}
+
+.all-list-titles {
+    all:unset;
+    text-align: center;
+}
+
+.all-list-titles li {
+    margin:5px;
+    padding:20px 1vw;
+    font-size:1.5vw;
+    border-radius:10px;
+    cursor: pointer;
+    list-style: none;
+    transition: background-color .5s ease;
+}
+
+.current-list-title {
+    pointer-events: none;
+}
+
+@media screen and (max-width:1000px) {
+    .side-menu {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .all-list-titles li {
+        display:inline-block;
+        padding:20px 40px;
+        font-size:24px;
+    }
+}
