@@ -1,0 +1,9 @@
+{
+  "server": {
+    "port": 8080
+  },
+  "client": {
+    "buildPath": "client/dist",
+    "srcPath": "client/src"
+  }
+}
