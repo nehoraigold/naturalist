@@ -1,4 +1,4 @@
-import config from "./config.json";
+import config from "../../config.json";
 
 export const debug = {
     inDebugMode: config.run.mode === "debug",

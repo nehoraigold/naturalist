@@ -4,7 +4,7 @@ import "../css/ListItem.css";
 import {observer, inject} from "mobx-react";
 import {computed} from "mobx";
 import ListItemStore from "../stores/ListItemStore";
-import {debug} from "../../../DEBUG";
+import {debug} from "../DEBUG";
 
 //endregion
 

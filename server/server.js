@@ -7,16 +7,17 @@ const config     = require('../config.json');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, '../', config.client.buildPath)));
+app.use(
+	bodyParser.json(),
+	express.static(path.resolve(__dirname, '../', config.client.buildPath))
+);
 
 app.get('*', (req, res) => {
-	console.log("REQUEST -", req);
 	res.sendFile(path.resolve(__dirname, '../', config.client.buildPath) + "/index.html");
 });
 
 app.post('/register', (req, res) => {
-
+	//registration
 });
 
 app.listen(config.server.port, () => {

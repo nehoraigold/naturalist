@@ -2,7 +2,7 @@
 import {observable, action} from "mobx";
 import IAppStore from "../types/interfaces/IAppStore";
 import ListStore, {defaultList} from "./ListStore";
-import {debug} from "../../../DEBUG";
+import {debug} from "../DEBUG";
 
 //endregion
 

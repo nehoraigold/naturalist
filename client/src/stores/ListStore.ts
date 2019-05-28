@@ -2,7 +2,7 @@
 import IList from "../types/interfaces/IList";
 import {action, observable} from "mobx";
 import ListItemStore from "./ListItemStore";
-import {debug} from "../../../DEBUG";
+import {debug} from "../DEBUG";
 //endregion
 
 export default class ListStore implements IList {
