@@ -3,6 +3,7 @@ import {observable, action} from "mobx";
 import IAppStore from "../types/interfaces/IAppStore";
 import ListStore, {defaultList} from "./ListStore";
 import {debug} from "../DEBUG";
+import * as config from "../../../config.json";
 
 //endregion
 
@@ -12,6 +13,7 @@ export class AppStore implements IAppStore {
     @observable isCreatingNewList: boolean = false;
     @observable isEditingListTitle: boolean = false;
     @observable selectedList: ListStore = defaultList;
+    @observable authenticated: boolean = false;
 
     @action.bound
     toggleIsCreatingNewList(isCreatingNewList: boolean) {
@@ -41,6 +43,11 @@ export class AppStore implements IAppStore {
             }
         }
         return false;
+    }
+
+    @action.bound
+    authenticate() {
+        this.authenticated = true;
     }
 
     showTheme() {

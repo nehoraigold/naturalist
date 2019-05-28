@@ -1,0 +1,103 @@
+body {
+    text-align:center;
+    color: white;
+    position:relative;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+.container {
+    transform:scale(0.9);
+    transition:all 1.2s ease-out;
+    width: 50%;
+    position:relative;
+    top:50px;
+    background-color: rgba(0,0,0,0.7);
+    border-radius:10px;
+    padding:30px;
+}
+
+.container.loaded {
+    opacity:1;
+    transform:scale(1);
+}
+
+.alert-danger {
+    margin-top:15px;
+}
+
+.leaf {
+    position:relative;
+    left:2px;
+    bottom: 2px;
+    transform: scaleX(-1);
+    font-size:28px;
+}
+
+.reg-form-container {
+    display:flex;
+    justify-content:center;
+}
+
+.reg-form-container form {
+    width:75%;
+}
+
+.form-control {
+    width:100%;
+    margin:30px 0;
+}
+
+.form-control::placeholder {
+    font-style: italic;
+}
+
+.was-validated .form-control {
+    margin: 10px 0;
+}
+
+.button-container {
+    position:relative;
+}
+
+form button.submit-button {
+    color: rgb(0, 43, 0);
+    background-color:white;
+    transition: all 0.5s ease;
+    position:relative;
+    top:5px;
+    z-index:123;
+    margin-top:30px;
+    outline:none;
+    border:0;
+    box-shadow:none;
+}
+
+form button.submit-button:focus {
+    outline:none;
+    border:0;
+    box-shadow:none;
+}
+
+.vine-grow {
+    margin-top:30px;
+    position:absolute;
+    transform:translate(-65%, -30%) scale(0.1);
+    z-index:1;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 1s ease, transform 1s ease 1s;
+}
+
+.submit-button:hover {
+    transition: all 1s ease;
+
+}
+
+.submit-button:hover ~ .vine-grow {
+    transition: all 1s ease;
+    opacity: 1;
+    transform: translate(-65%, -30%) scale(0.8)
+}

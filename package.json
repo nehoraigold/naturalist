@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "webpack",
-    "dev": "nodemon server/server.js",
+    "dev:back": "nodemon server/server.js",
+    "dev:front": "webpack-dev-server",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,6 +24,7 @@
     "mobx-react": "^5.4.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
     "webpack": "^4.32.2"
   },
   "devDependencies": {

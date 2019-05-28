@@ -1,7 +1,7 @@
 //region imports
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import '../css/App.css';
-import {inject, observer, Provider} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import TopMenu from "./TopMenu";
 import SideMenu from "./SideMenu";
 import ListComponent from "./ListComponent";
@@ -19,7 +19,7 @@ class App extends Component<any, any> {
             this.props.rootStore.appStore.selectedList.selectedItem === null ||
             this.props.rootStore.appStore.isCreatingNewList ? "full-size" : "half-size";
         return (
-            <div>
+            <Fragment>
                 <TopMenu/>
                 <div className='main-app'>
                     <SideMenu/>
@@ -31,7 +31,7 @@ class App extends Component<any, any> {
                     !this.props.rootStore.appStore.isCreatingNewList ?
                         <EditListItem/> : null}
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }
