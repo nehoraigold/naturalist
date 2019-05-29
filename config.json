@@ -1,6 +1,13 @@
 {
   "server": {
-    "port": 8080
+    "port": 8080,
+    "db": {
+      "name": "naturalist",
+      "protocol": "mongodb+srv",
+      "username": "admin",
+      "password": "root",
+      "url": "naturalist-28qec.mongodb.net"
+    }
   },
   "client": {
     "buildPath": "client/dist",

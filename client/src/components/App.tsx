@@ -19,8 +19,6 @@ class App extends Component<any, any> {
             this.props.rootStore.appStore.selectedList.selectedItem === null ||
             this.props.rootStore.appStore.isCreatingNewList ? "full-size" : "half-size";
         return (
-            <Fragment>
-                <TopMenu/>
                 <div className='main-app'>
                     <SideMenu/>
                     <div className={`current-list ${size}`}>
@@ -31,7 +29,6 @@ class App extends Component<any, any> {
                     !this.props.rootStore.appStore.isCreatingNewList ?
                         <EditListItem/> : null}
                 </div>
-            </Fragment>
         );
     }
 }

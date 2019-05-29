@@ -4,6 +4,8 @@ import {observer, inject} from "mobx-react";
 import App from "./App";
 import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import Login from "./Login";
+import TopMenu from "./TopMenu";
+import Register from "./Register";
 
 //endregion
 
@@ -17,11 +19,14 @@ class Router extends React.Component<any, any> {
     render() {
         return (
             <BrowserRouter>
+                <TopMenu/>
                 <Switch>
                     <Route className={this.props.rootStore.appStore.authenticated}
                            path="/login" render={() => this.props.rootStore.appStore.authenticated ?
                             <Redirect to="/"/> : <Login/> }/>
-                    <Route path="/register"/>
+                    <Route className={this.props.rootStore.appStore.authenticated}
+                           path="/register" render={() => this.props.rootStore.appStore.authenticated ?
+                        <Redirect to="/"/> : <Register/>} />
                     <Route className={this.props.rootStore.appStore.authenticated}
                            path="/" render={() => this.props.rootStore.appStore.authenticated ?
                             <App/> : <Redirect to="/login"/>}/>

@@ -2,6 +2,7 @@
 import * as React from "react";
 import {observer, inject} from "mobx-react";
 import "../css/TopMenu.css";
+import {Link} from "react-router-dom";
 //endregion
 
 @inject('rootStore')
@@ -35,6 +36,7 @@ class TopMenu extends React.Component<any, any> {
                         NaturaList
                     </span>
                 </span>
+                <Link to={"/register"}>Sign up</Link>
                 <div className='themes'>
                     <span className='themes-label'> Themes </span>
                     <div

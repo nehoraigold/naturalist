@@ -8,14 +8,17 @@ import * as config from "../../../config.json";
 
 @inject('rootStore')
 @observer
-class Login extends React.Component<any, any> {
+class Register extends React.Component<any, any> {
+    private form;
+
     constructor(props) {
         super(props);
-        this.login = this.login.bind(this);
+        this.register = this.register.bind(this);
         this.setField = this.setField.bind(this);
         this.state = {
             email: "",
             password: "",
+            passwordVerification: "",
             attempted: false
         }
     }
@@ -28,17 +31,24 @@ class Login extends React.Component<any, any> {
         } else if (fieldName === "password") {
             let password = event.target.value;
             this.setState({password});
+        } else if (fieldName === "passwordVerification") {
+            let passwordVerification = event.target.value;
+            this.setState({passwordVerification});
         }
     }
 
-    async login(e) {
+    async register(e) {
         e.preventDefault();
-        const response = await fetch(`http://localhost:${config.server.port}/login`, {
+        if (this.state.password !== this.state.passwordVerification || !this.form.checkValidity()) {
+            this.setState({attempted: true});
+            return;
+        }
+        const response = await fetch(`http://localhost:${config.server.port}/register`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                email: e.target.email.value,
-                password: e.target.password.value
+                email: this.state.email,
+                password: this.state.password
             })})
             .then(res => res.json())
             .catch(err => console.log(err));
@@ -53,13 +63,12 @@ class Login extends React.Component<any, any> {
     render() {
         return (
             <div className="container">
-                <h1>Log In</h1>
+                <h1>Sign Up</h1>
                 <div className="reg-form-container">
-                    <form className="needs-validation" noValidate onSubmit={this.login}>
-                        {this.state.attempted ?
-                            <div className="alert alert-danger" role="alert">
-                                Your username or password is incorrect. Please try again.
-                            </div> : null}
+                    <form className={`needs-validation ${this.state.attempted ? "was-validated" : ""}`}
+                          noValidate
+                          onSubmit={this.register}
+                          ref={form => this.form = form}>
                         <div className="form-section">
                             <label htmlFor="email" className="sr-only">Email</label>
                             <input className="form-control" type="email" placeholder="Email"
@@ -85,9 +94,21 @@ class Login extends React.Component<any, any> {
                                 lowercase letter, one uppercase letter, and one number.
                             </div>
                         </div>
+                        <div className="form-section">
+                            <label htmlFor="password" className="sr-only">Verify Password</label>
+                            <input className="form-control" placeholder="Password (again)" type="password" name="passwordVerification"
+                                   id="passwordVerification"
+                                   value={this.state.passwordVerification}
+                                   onChange={this.setField}
+                                   required
+                                   pattern={`^${this.state.password}$`}
+                            />
+                            <div className="valid-feedback"/>
+                            <div className="invalid-feedback">The passwords do not match.</div>
+                        </div>
                         <div className="button-container">
                             <button type="submit" className="submit-button btn btn-lg">
-                                Login
+                                Register
                             </button>
                             <svg className="vine-grow" width="380" height="100">
                                 <g>
@@ -104,4 +125,4 @@ class Login extends React.Component<any, any> {
     }
 }
 
-export default Login;
+export default Register;
