@@ -37,16 +37,16 @@ class Login extends React.Component<any, any> {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                email: e.target.email.value,
+                email: e.target.email.value.toLowerCase(),
                 password: e.target.password.value
             })})
             .then(res => res.json())
             .catch(err => console.log(err));
         debug.log(response);
-        if (response.authenticated) {
+        if (response.userId) {
             this.props.rootStore.appStore.authenticate();
         } else {
-            this.setState({attempted: true});
+            this.setState({attempted: true, password: ""});
         }
     }
 

@@ -47,16 +47,16 @@ class Register extends React.Component<any, any> {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                email: this.state.email,
+                email: this.state.email.toLowerCase(),
                 password: this.state.password
             })})
             .then(res => res.json())
             .catch(err => console.log(err));
         debug.log(response);
-        if (response.authenticated) {
+        if (response.userId) {
             this.props.rootStore.appStore.authenticate();
         } else {
-            this.setState({attempted: true});
+            this.setState({attempted: true, password: "", passwordVerification: ""});
         }
     }
 

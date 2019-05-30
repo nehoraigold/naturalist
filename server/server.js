@@ -1,8 +1,9 @@
 //region imports
-const User = require('./dbutils/User');
+const User     = require('./dbutils/User');
 const mongoose = require('mongoose');
-const config = require('../config.json');
-const PRIVATE = require('./private');
+const config   = require('../config.json');
+const PRIVATE  = require('./private');
+
 //endregion
 
 class Server {
@@ -15,20 +16,20 @@ class Server {
 
 	async login(req, res) {
 		User.authenticate(req.body.email, req.body.password, response => {
-			console.log(response);
-			if (response.user !== null) {
-				res.json({authenticated: true, userId: response.user._id});
-			} else {
-				res.json({authenticated: false, userId: null});
-			}
+			res.json({status: response.status, msg: response.msg, userId: response.user ? response.user._id : null});
 		});
 	}
 
 	async register(req, res) {
 		User.create(req.body.email, req.body.password, response => {
-			res.json(response);
+			res.json({status: response.status, msg: response.msg, userId: response.user._id});
 		});
 	}
+
+	async logout(req, res) {
+
+	}
+
 }
 
 module.exports = new Server();
