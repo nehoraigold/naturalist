@@ -24,59 +24,61 @@ UserSchema.statics.create = (email, password, callback) => {
 		if (err) {
 			return console.log(err);
 		}
-		if (!user) {
-			let user = new User({email, password});
-			user.save()
-				.then(user => callback(user))
-				.catch(err => console.log(err));
+		if (user) {
+			let response = {
+				msg: "User exists",
+				status: 401,
+				user: user,
+			};
+			return callback(response);
 		}
+		bcrypt.hash(password, 10, async (err, password) => {
+			if (err) {
+				return console.log(err);
+			}
+			let user = new User({email, password});
+			await user.save(err => {
+				console.log("made it to save!");
+				if (err) {
+					return console.log(err)
+				}
+			});
+			let response = {
+				msg: "User created",
+				status: 201,
+				user: user
+			};
+			return callback(response);
+		})
 	});
 };
 
 UserSchema.statics.authenticate = (email, password, callback) => {
-	User.findOne({email})
-		.then(user => {
-			if (!user) {
-				let response = {
-					user: null,
-					status: 404,
-					msg: "User not found"
-				};
-				return callback(response);
-			}
-			bcrypt.compare(password, user.password, (err, result) => {
-				let response;
-				if (err) {
-					return err;
-				} else if (result === true) {
-					response = {
-						user: user,
-						status: 200,
-						msg: "User found"
-					};
-				} else {
-					response = {
-						user: null,
-						status: 401,
-						msg: "Incorrect credentials"
-					};
-				}
-				return callback(response);
-			}).catch(err => console.log(err));
-		}).catch(err => console.log(err))
-};
-
-UserSchema.pre('save', next => {
-	let user = this;
-	console.log(user);
-	bcrypt.hash(user.password, 10, (err, hash) => {
+	User.findOne({email}, (err, user) => {
 		if (err) {
-			return next(err);
+			return console.log(err);
 		}
-		user.password = hash;
-		next();
+		if (!user) {
+			let response = {
+				user: null,
+				status: 404,
+				msg: "User not found"
+			};
+			return callback(response);
+		}
+		bcrypt.compare(password, user.password, (err, result) => {
+			if (err) {
+				return console.log(err);
+			}
+			let response = {
+				user: result ? user : null,
+				status: result ? 200 : 401,
+				msg: result ? "User found" : "Incorrect credentials"
+			};
+			return callback(response);
+		})
 	});
-});
+};
 
 const User = mongoose.model('User', UserSchema);
 

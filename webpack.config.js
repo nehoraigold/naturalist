@@ -34,11 +34,4 @@ module.exports = [{
 			{enforce: "pre", test: /\.js$/, loader: "source-map-loader"}
 		]
 	}
-// }, {
-// 	entry: './server/server.js',
-// 	output: {
-// 		filename: './index.js',
-// 		path: path.resolve(__dirname, 'server/build')
-// 	},
-// 	devtool: "sourceMap"
 }];

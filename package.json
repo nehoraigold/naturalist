@@ -4,9 +4,9 @@
   "description": "Nature-themed to-do list app",
   "main": "client/src/index.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "node server/app.js",
     "build": "webpack",
-    "dev:back": "nodemon server/server.js",
+    "dev:back": "nodemon server/app.js",
     "dev:front": "webpack-dev-server",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
