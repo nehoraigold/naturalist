@@ -28,7 +28,7 @@ class SideMenu extends React.Component<any, any> {
             return;
         }
         this.props.rootStore.appStore.toggleIsCreatingNewList(false);
-        const selectedListId = parseInt(event.target.getAttribute("data-list-id"));
+        const selectedListId = event.target.getAttribute("data-list-id");
         this.props.rootStore.selectList(selectedListId);
 
     }

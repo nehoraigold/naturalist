@@ -5,6 +5,7 @@ import {ToDoStore, toDoStore} from "./ToDoStore";
 import IList from "../types/interfaces/IList";
 import ListStore from "./ListStore";
 import ListItemStore from "./ListItemStore";
+import {debug} from "../DEBUG";
 
 declare const window: any;
 
@@ -17,13 +18,15 @@ class RootStore {
     selectList(listId: string) {
         let selectedList = this.toDoStore.lists.find((list: IList) => list.id === listId);
         if (!selectedList) {
+            debug.log("Could not find selected list");
             return;
         }
         this.appStore.selectList(selectedList);
     }
 
-    createList(listName: string, id: string) {
-        const newList = this.toDoStore.createNewList(listName, id);
+    createList(listName: string) {
+        //create new list in database
+        const newList = this.toDoStore.createNewList(listName, "FAKE_ID");
         this.appStore.selectList(newList);
         this.appStore.toggleIsCreatingNewList(false);
     }

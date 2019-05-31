@@ -4,6 +4,7 @@ import {inject, observer} from "mobx-react";
 import "../css/LoginRegister.css";
 import {debug} from "../DEBUG";
 import * as config from "../../../config.json";
+
 //endregion
 
 @inject('rootStore')
@@ -37,9 +38,10 @@ class Login extends React.Component<any, any> {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                email: e.target.email.value.toLowerCase(),
-                password: e.target.password.value
-            })})
+                email: this.state.email.toLowerCase(),
+                password: this.state.password
+            })
+        })
             .then(res => res.json())
             .catch(err => console.log(err));
         debug.log(response);

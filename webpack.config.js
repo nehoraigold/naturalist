@@ -16,7 +16,7 @@ module.exports = [{
 	devServer: {
 		contentBase: path.join(__dirname, config.client.buildPath),
 		compress: true,
-		port: config.server.port
+		port: config.server.port + 1
 	},
 	devtool: "source-map",
 	plugins: [
