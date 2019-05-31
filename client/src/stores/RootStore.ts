@@ -26,7 +26,7 @@ class RootStore {
 
     createList(listName: string) {
         //create new list in database
-        const newList = this.toDoStore.createNewList(listName, "FAKE_ID");
+        const newList = this.toDoStore.createNewList(listName, "FAKE_ID"); //TODO: Change this fake id situation
         this.appStore.selectList(newList);
         this.appStore.toggleIsCreatingNewList(false);
     }

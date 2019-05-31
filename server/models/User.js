@@ -1,7 +1,9 @@
 //region imports
 const mongoose = require('mongoose');
+const List     = require('./List');
+const ListItem = require('./ListItem');
 const bcrypt   = require('bcrypt');
-const utils  = require('../utils');
+const utils    = require('../utils');
 //endregion
 
 const UserSchema = new mongoose.Schema({
@@ -56,23 +58,24 @@ UserSchema.statics.find = async (identifyingFields, callback) => {
 UserSchema.statics.create = (email, password, callback) => {
 	User.find({email}, user => {
 		if (user) {
-			let response = utils.getResponse(401, "User exists already", {user: user.toObject()});
+			const response = utils.getResponse(401, "User exists already", {user: user.toObject()});
 			return callback ? callback(response) : response;
 		}
 		bcrypt.hash(password, 10, async (err, password) => {
 			if (err) {
 				return console.log(err);
 			}
-			let data       = {
+			const defaultList = await List.createDefault();
+			let user          = new User({
 				email,
 				password,
-				lists: [toDoList._id],
-				theme: "blue",
-				_id: new mongoose.Types.ObjectId()
-			};
-			let user       = new User(data);
+				lists: [defaultList._id],
+				theme: "blue"
+			});
 			await user.save(err => console.log(err));
-			let response = utils.getResponse(201, "User created", {user: user.toObject()});
+			user = user.toObject();
+			user.lists = [defaultList];
+			const response = utils.getResponse(201, "User created", {user});
 			return callback(response);
 		})
 	});

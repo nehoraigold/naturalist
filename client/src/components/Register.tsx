@@ -53,8 +53,8 @@ class Register extends React.Component<any, any> {
             .then(res => res.json())
             .catch(err => console.log(err));
         debug.log(response);
-        if (response.userId) {
-            this.props.rootStore.appStore.authenticate();
+        if (response.data && response.data.user) {
+            this.props.rootStore.login(response);
         } else {
             this.setState({attempted: true, password: "", passwordVerification: ""});
         }

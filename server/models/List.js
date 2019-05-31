@@ -1,5 +1,6 @@
 //region imports
 const mongoose = require('mongoose');
+const ListItem = require('./ListItem');
 //endregion
 
 const ListSchema = new mongoose.Schema({
@@ -13,15 +14,35 @@ const ListSchema = new mongoose.Schema({
 	}
 });
 
-ListSchema.statics.create = async (listTitle, callback) => {
+ListSchema.statics.find = async (listId, callback) => {
+	return await List.findOne({_id: listId})
+		.populate({path: "items"})
+		.exec((err, list) => {
+			if (err) {
+				return console.log(err);
+			}
+			return callback ? callback(list) : list;
+		})
+};
+
+ListSchema.statics.create = async (listTitle, callback, items) => {
 	const list = new List({
 		_id: new mongoose.Types.ObjectId(),
 		title: listTitle,
-		items: []
+		items: items ? items.map(item => item._id) : []
 	});
-	await list.save();
+	await list.save(err => console.log(err));
 	console.log("SAVING LIST", list);
 	return callback ? callback(list) : list;
+};
+
+ListSchema.statics.createDefault = async (callback) => {
+	let defaultItem = await ListItem.create("Buy milk");
+	let defaultList = await List.create("To Do", null, [defaultItem]);
+	defaultList = defaultList.toObject();
+	defaultList.items = [defaultItem.toObject()];
+	console.log(defaultList);
+	return callback ? callback(defaultList) : defaultList;
 };
 
 ListSchema.methods.update = async (listId, listFields, callback) => {
