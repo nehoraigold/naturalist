@@ -8,33 +8,29 @@ const ListSchema = new mongoose.Schema({
 		required: true
 	},
 	items: {
-		type: Array,
+		type: [{type: mongoose.Schema.Types.ObjectId, ref: "ListItem"}],
 		required: true
 	}
 });
 
 ListSchema.statics.create = async (listTitle, callback) => {
-	const list = new List({title: listTitle, items: []});
-	await list.save();
-	return callback ? callback(list) : list;
-};
-
-ListSchema.statics.delete = async (list, callback) => {
-	//delete a list
-};
-
-ListSchema.statics.update = async (listId, listFields, callback) => {
-	let list = await List.findByIdAndUpdate(listId, listFields);
-	return callback ? callback(list) : list;
-};
-
-ListSchema.statics.loadMany = async (listIdArray) => {
-	let lists = [];
-	listIdArray.forEach(async (listId) => {
-		let list = await List.findById(listId);
-		lists.push(list);
+	const list = new List({
+		_id: new mongoose.Types.ObjectId(),
+		title: listTitle,
+		items: []
 	});
-	return lists;
+	await list.save();
+	console.log("SAVING LIST", list);
+	return callback ? callback(list) : list;
+};
+
+ListSchema.methods.update = async (listId, listFields, callback) => {
+	let list = await List.findByIdAndUpdate(listId.toString(), listFields);
+	return callback ? callback(list) : list;
+};
+
+ListSchema.methods.delete = async (callback) => {
+	//delete a list
 };
 
 const List = mongoose.model('List', ListSchema);

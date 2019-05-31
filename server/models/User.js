@@ -1,8 +1,7 @@
 //region imports
 const mongoose = require('mongoose');
 const bcrypt   = require('bcrypt');
-const List = require('./List');
-const ListItem = require('./ListItem');
+const utils  = require('../utils');
 //endregion
 
 const UserSchema = new mongoose.Schema({
@@ -17,7 +16,7 @@ const UserSchema = new mongoose.Schema({
 		required: true
 	},
 	lists: {
-		type: Array,
+		type: [{type: mongoose.Schema.Types.ObjectId, ref: "List"}],
 		required: true
 	},
 	theme: {
@@ -30,65 +29,72 @@ const UserSchema = new mongoose.Schema({
 	}
 });
 
-UserSchema.statics.create = (email, password, callback) => {
-	User.findOne({email}, (err, user) => {
-		if (err) {
-			return console.log(err);
+UserSchema.statics.find = async (identifyingFields, callback) => {
+	const SEARCHABLE_FIELDS = ["sessionId", "_id", "email"];
+	for (let field in identifyingFields) {
+		if (field && identifyingFields.hasOwnProperty(field) && SEARCHABLE_FIELDS.includes(field)) {
+			let query    = {};
+			query[field] = identifyingFields[field];
+			return await User.findOne(query)
+				.populate({
+					path: "lists",
+					populate: {
+						path: "items",
+						model: "ListItem"
+					}
+				})
+				.exec((err, user) => {
+					if (err) {
+						return console.log(err);
+					}
+					return callback ? callback(user) : user;
+				})
 		}
+	}
+};
+
+UserSchema.statics.create = (email, password, callback) => {
+	User.find({email}, user => {
 		if (user) {
-			let response = {
-				msg: "User exists",
-				status: 401,
-				user: user,
-			};
-			return callback(response);
+			let response = utils.getResponse(401, "User exists already", {user: user.toObject()});
+			return callback ? callback(response) : response;
 		}
 		bcrypt.hash(password, 10, async (err, password) => {
 			if (err) {
 				return console.log(err);
 			}
-			const listItem = await ListItem.create('Buy milk');
-			const toDoList = await List.create('To Do');
-			let data = {email, password, lists: [toDoList._id], theme: "blue"};
-			let user = new User(data);
-			await user.save(err => console.log(err));
-			let response = {
-				msg: "User created",
-				status: 201,
-				user: user
+			let data       = {
+				email,
+				password,
+				lists: [toDoList._id],
+				theme: "blue",
+				_id: new mongoose.Types.ObjectId()
 			};
+			let user       = new User(data);
+			await user.save(err => console.log(err));
+			let response = utils.getResponse(201, "User created", {user: user.toObject()});
 			return callback(response);
 		})
 	});
 };
 
 UserSchema.statics.authenticate = (email, password, callback) => {
-	User.findOne({email}, (err, user) => {
-		if (err) {
-			return console.log(err);
-		}
+	User.find({email}, user => {
 		if (!user) {
-			let response = {
-				user: null,
-				status: 404,
-				msg: "User not found"
-			};
+			let response = utils.getResponse(404, "User not found", null);
 			return callback ? callback(response) : response;
 		}
-		bcrypt.compare(password, user.password, (err, result) => {
+		bcrypt.compare(password, user.password, async (err, result) => {
 			if (err) {
 				return console.log(err);
 			}
-			if (result) {
-				//load all lists and list items
-			}
-			let response = {
-				user: result ? user : null,
-				status: result ? 200 : 401,
-				msg: result ? "User found" : "Incorrect credentials"
-			};
+			let response = utils.getResponse(
+				result ? 200 : 401,
+				result ? "User found" : "Incorrect credentials",
+				result ? {user: user.toObject()} : null);
+			console.log(JSON.stringify(response));
 			return callback ? callback(response) : response;
-		})
+		});
 	});
 };
 

@@ -6,17 +6,16 @@ import ListStore from "./ListStore";
 
 export class ToDoStore implements IToDoStore {
     @observable lists: Array<ListStore> = [];
-    @observable listIdIncrementer: number = 1;
 
     @action.bound
-    createNewList(newListName: string) {
-        let newList = new ListStore(newListName, this.listIdIncrementer++);
+    createNewList(newListName: string, id: string) {
+        let newList = new ListStore(newListName, id);
         this.lists.push(newList);
         return newList;
     }
 
     @action.bound
-    deleteList(listID: number) {
+    deleteList(listID: string) {
         this.lists = this.lists.filter(list => list.id !== listID);
     }
 }

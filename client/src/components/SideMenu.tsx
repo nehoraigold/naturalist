@@ -48,7 +48,8 @@ class SideMenu extends React.Component<any, any> {
                 <ul className='all-list-titles'>
                     {this.renderListTitles()}
                     <li onClick={this.createNewList}
-                        className={`${this.props.rootStore.appStore.isCreatingNewList ? "current-list-title" : ""}`}>
+                        className={`${this.props.rootStore.appStore.isCreatingNewList ? "current-list-title" : ""}`}
+                        key={"+"}>
                         +
                     </li>
                 </ul>

@@ -25,6 +25,7 @@ const ListItemSchema = new mongoose.Schema({
 
 ListItemSchema.statics.create = async (itemDescription, callback) => {
 	const listItem = new ListItem({
+		_id: new mongoose.Types.ObjectId(),
 		description: itemDescription,
 		completed: false,
 		starred: false,
@@ -35,18 +36,9 @@ ListItemSchema.statics.create = async (itemDescription, callback) => {
 	return callback ? callback(listItem) : listItem;
 };
 
-ListItemSchema.statics.update = async (itemId, itemFields, callback) => {
+ListItemSchema.methods.update = async (itemId, itemFields, callback) => {
 	let listItem = await ListItem.findByIdAndUpdate(itemId, itemFields);
 	return callback ? callback(listItem) : listItem;
-};
-
-ListItemSchema.statics.loadMany = async (listItemIdArray) => {
-	let listItems = [];
-	listItemIdArray.forEach(async (listItemId) => {
-		let item = await ListItem.findById(listItemId);
-		listItems.push(item);
-	});
-	return listItems;
 };
 
 const ListItem = mongoose.model('ListItem', ListItemSchema);

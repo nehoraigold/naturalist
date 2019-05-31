@@ -9,9 +9,9 @@ export default class ListStore implements IList {
     @observable title: string;
     @observable items: ListItemStore[] = [];
     @observable selectedItem: ListItemStore | null = null;
-    public id: number;
+    public id: string;
 
-    constructor(title: string, id: number) {
+    constructor(title: string, id: string) {
         this.title = title;
         this.id = id;
     }

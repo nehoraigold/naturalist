@@ -16,6 +16,7 @@ import {rootStore} from "../stores/RootStore";
 class App extends Component<any, any> {
     render() {
         let size =
+            this.props.rootStore.appStore.selectedList === null ||
             this.props.rootStore.appStore.selectedList.selectedItem === null ||
             this.props.rootStore.appStore.isCreatingNewList ? "full-size" : "half-size";
         return (
@@ -25,7 +26,8 @@ class App extends Component<any, any> {
                         {this.props.rootStore.appStore.isCreatingNewList ?
                             <ProtoList/> : <ListComponent/>}
                     </div>
-                    {this.props.rootStore.appStore.selectedList.selectedItem !== null &&
+                    {this.props.rootStore.appStore.selectedList !== null &&
+                    this.props.rootStore.appStore.selectedList.selectedItem !== null &&
                     !this.props.rootStore.appStore.isCreatingNewList ?
                         <EditListItem/> : null}
                 </div>

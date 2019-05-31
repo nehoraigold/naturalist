@@ -16,6 +16,5 @@
   },
   "run": {
     "mode": "debug"
-  },
-  "themes": ["blue", "green", "yellow", "purple"]
+  }
 }
