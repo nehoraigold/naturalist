@@ -1,11 +1,11 @@
 //region imports
 import {observable, action} from "mobx";
 import IToDoStore from "../types/interfaces/IToDoStore";
-import ListStore, {defaultList} from "./ListStore";
+import ListStore from "./ListStore";
 //endregion
 
 export class ToDoStore implements IToDoStore {
-    @observable lists: Array<ListStore> = [defaultList];
+    @observable lists: Array<ListStore> = [];
     @observable listIdIncrementer: number = 1;
 
     @action.bound

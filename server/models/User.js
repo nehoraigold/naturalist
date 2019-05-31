@@ -1,20 +1,31 @@
+//region imports
 const mongoose = require('mongoose');
 const bcrypt   = require('bcrypt');
+const List = require('./List');
+const ListItem = require('./ListItem');
+//endregion
 
 const UserSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		unique: true,
-		required: true
+		required: true,
+		lowercase: true
 	},
 	password: {
 		type: String,
 		required: true
 	},
-	fname: {
-		type: String
+	lists: {
+		type: Array,
+		required: true
 	},
-	lname: {
+	theme: {
+		type: String,
+		required: true,
+		lowercase: true
+	},
+	sessionId: {
 		type: String
 	}
 });
@@ -36,13 +47,11 @@ UserSchema.statics.create = (email, password, callback) => {
 			if (err) {
 				return console.log(err);
 			}
-			let user = new User({email, password});
-			await user.save(err => {
-				console.log("made it to save!");
-				if (err) {
-					return console.log(err)
-				}
-			});
+			const listItem = await ListItem.create('Buy milk');
+			const toDoList = await List.create('To Do');
+			let data = {email, password, lists: [toDoList._id], theme: "blue"};
+			let user = new User(data);
+			await user.save(err => console.log(err));
 			let response = {
 				msg: "User created",
 				status: 201,
@@ -64,18 +73,21 @@ UserSchema.statics.authenticate = (email, password, callback) => {
 				status: 404,
 				msg: "User not found"
 			};
-			return callback(response);
+			return callback ? callback(response) : response;
 		}
 		bcrypt.compare(password, user.password, (err, result) => {
 			if (err) {
 				return console.log(err);
+			}
+			if (result) {
+				//load all lists and list items
 			}
 			let response = {
 				user: result ? user : null,
 				status: result ? 200 : 401,
 				msg: result ? "User found" : "Incorrect credentials"
 			};
-			return callback(response);
+			return callback ? callback(response) : response;
 		})
 	});
 };

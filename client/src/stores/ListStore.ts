@@ -55,5 +55,3 @@ export default class ListStore implements IList {
         return this.items.find((item: ListItemStore) => item.id === itemId);
     }
 }
-
-export const defaultList = new ListStore("To Do", 0).addItem("Item #1");

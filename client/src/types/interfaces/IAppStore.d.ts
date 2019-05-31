@@ -6,5 +6,5 @@ export default interface IAppStore {
     selectedTheme: string
     isCreatingNewList: boolean
     isEditingListTitle: boolean
-    selectedList: IList
+    selectedList: IList | null
 }
