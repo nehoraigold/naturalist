@@ -14,18 +14,18 @@ const ListSchema = new mongoose.Schema({
 	}
 });
 
-ListSchema.statics.find = async (listId, callback) => {
-	return await List.findOne({_id: listId})
-		.populate({path: "items"})
-		.exec((err, list) => {
-			if (err) {
-				return console.log(err);
-			}
-			return callback ? callback(list) : list;
-		})
-};
+// ListSchema.statics.find = async (listId, callback) => {
+// 	return await List.findOne({_id: listId})
+// 		.populate({path: "items"})
+// 		.exec((err, list) => {
+// 			if (err) {
+// 				return console.log(err);
+// 			}
+// 			return callback ? callback(list) : list;
+// 		})
+// };
 
-ListSchema.statics.create = async (listTitle, callback, items) => {
+ListSchema.statics.create = async (listTitle, items, callback) => {
 	const list = new List({
 		_id: new mongoose.Types.ObjectId(),
 		title: listTitle,
@@ -38,7 +38,7 @@ ListSchema.statics.create = async (listTitle, callback, items) => {
 
 ListSchema.statics.createDefault = async (callback) => {
 	let defaultItem = await ListItem.create("Buy milk");
-	let defaultList = await List.create("To Do", null, [defaultItem]);
+	let defaultList = await List.create("To Do", [defaultItem]);
 	defaultList = defaultList.toObject();
 	defaultList.items = [defaultItem.toObject()];
 	console.log(defaultList);

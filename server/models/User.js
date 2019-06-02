@@ -41,8 +41,7 @@ UserSchema.statics.find = async (identifyingFields, callback) => {
 				.populate({
 					path: "lists",
 					populate: {
-						path: "items",
-						model: "ListItem"
+						path: "items"
 					}
 				})
 				.exec((err, user) => {
@@ -50,7 +49,7 @@ UserSchema.statics.find = async (identifyingFields, callback) => {
 						return console.log(err);
 					}
 					return callback ? callback(user) : user;
-				})
+				});
 		}
 	}
 };
@@ -66,7 +65,7 @@ UserSchema.statics.create = (email, password, callback) => {
 				return console.log(err);
 			}
 			const defaultList = await List.createDefault();
-			let user          = new User({
+			let user = new User({
 				email,
 				password,
 				lists: [defaultList._id],

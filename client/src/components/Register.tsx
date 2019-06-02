@@ -51,13 +51,16 @@ class Register extends React.Component<any, any> {
                 password: this.state.password
             })})
             .then(res => res.json())
-            .catch(err => console.log(err));
-        debug.log(response);
-        if (response.data && response.data.user) {
-            this.props.rootStore.login(response);
-        } else {
-            this.setState({attempted: true, password: "", passwordVerification: ""});
-        }
+            .catch(err => console.log(err))
+            .then(response => {
+                debug.log(response);
+                if (response.data && response.data.user) {
+                    this.props.rootStore.login(response);
+                } else {
+                    this.setState({attempted: true, password: "", passwordVerification: ""});
+                }
+            })
+            .catch(err => debug.log(err));
     }
 
     render() {
