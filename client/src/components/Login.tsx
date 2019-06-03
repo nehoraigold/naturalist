@@ -46,7 +46,7 @@ class Login extends React.Component<any, any> {
             .catch(err => console.log(err));
         debug.log(response);
         if (response.data && response.data.user) {
-            this.props.rootStore.login(response);
+            this.props.rootStore.loadDataAndAuthenticate(response);
         } else {
             this.setState({attempted: true, password: ""});
         }

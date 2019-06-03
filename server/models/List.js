@@ -14,16 +14,14 @@ const ListSchema = new mongoose.Schema({
 	}
 });
 
-// ListSchema.statics.find = async (listId, callback) => {
-// 	return await List.findOne({_id: listId})
-// 		.populate({path: "items"})
-// 		.exec((err, list) => {
-// 			if (err) {
-// 				return console.log(err);
-// 			}
-// 			return callback ? callback(list) : list;
-// 		})
-// };
+ListSchema.statics.findByListId = async (listId, callback) => {
+	return List.findOne({_id: listId}).exec((err, list) => {
+		if (err) {
+			return console.log(err);
+		}
+		return callback ? callback(list) : list;
+	});
+};
 
 ListSchema.statics.create = async (listTitle, items, callback) => {
 	const list = new List({
@@ -45,13 +43,32 @@ ListSchema.statics.createDefault = async (callback) => {
 	return callback ? callback(defaultList) : defaultList;
 };
 
-ListSchema.methods.update = async (listId, listFields, callback) => {
-	let list = await List.findByIdAndUpdate(listId.toString(), listFields);
-	return callback ? callback(list) : list;
+ListSchema.statics.updateList = async (listId, listFields, callback) => {
+	let list = await List.findOne({_id: listId});
+	if (!list) {
+		let response = utils.getResponse(401, "List could not be found", null);
+		return callback ? callback(response) : response;
+	}
+	if (listFields && listFields.hasOwnProperty("title") && listFields.title) {
+		list.title = listFields.title;
+	}
+	if (listFields && listFields.hasOwnProperty("newItemDescription") && listFields.newItemDescription) {
+		await list.addItem(listFields.newItemDescription);
+	}
+	await list.save(console.log);
+	let response = utils.getResponse(200, "List updated", list.toObject());
+	return callback ? callback(response) : response;
 };
 
 ListSchema.methods.delete = async (callback) => {
 	//delete a list
+};
+
+ListSchema.methods.addItem = async (itemDescription) => {
+	const listItem = await ListItem.create(itemDescription);
+	this.items.push(listItem._id);
+	await this.save(console.log);
+	return this;
 };
 
 const List = mongoose.model('List', ListSchema);

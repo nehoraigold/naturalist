@@ -8,7 +8,7 @@ import EditNotes from "./EditNotes";
 import "../css/EditListItem.css";
 //endregion
 
-//todo: add proper typing to everything
+//TODO: add proper typing to everything
 
 @inject('rootStore')
 @observer

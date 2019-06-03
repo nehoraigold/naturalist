@@ -25,13 +25,13 @@ class RootStore {
     }
 
     createList(listName: string) {
-        //create new list in database
+        //TODO: create new list in database
         const newList = this.toDoStore.createNewList(listName, "FAKE_ID"); //TODO: Change this fake id situation
         this.appStore.selectList(newList);
         this.appStore.toggleIsCreatingNewList(false);
     }
 
-    login(serverResponse) {
+    loadDataAndAuthenticate(serverResponse) {
         console.log("SERVER RESPONSE HERE", serverResponse);
         this.loadData(serverResponse.data.user.lists);
         this.appStore.selectedList = this.toDoStore.lists[0];
@@ -42,7 +42,7 @@ class RootStore {
         listOfLists.forEach(list => {
             let listStore = new ListStore(list.title, list._id);
             listStore.items = list.items.map(item => {
-                let listItemStore = new ListItemStore(item.description);
+                let listItemStore = new ListItemStore(item.description, item._id);
                 for (let prop in item) {
                     if (prop && item.hasOwnProperty(prop) && listItemStore.hasOwnProperty(prop)) {
                         listItemStore[prop] = item[prop];

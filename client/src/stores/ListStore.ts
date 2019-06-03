@@ -3,6 +3,7 @@ import IList from "../types/interfaces/IList";
 import {action, observable} from "mobx";
 import ListItemStore from "./ListItemStore";
 import {debug} from "../DEBUG";
+import * as config from "../../../config.json";
 //endregion
 
 export default class ListStore implements IList {
@@ -18,18 +19,21 @@ export default class ListStore implements IList {
 
     @action.bound
     addItem(description: string): ListStore {
-        this.items.push(new ListItemStore(description));
+        fetch(`http://localhost:${config.server.port}/save?type=list`)
+        this.items.push(new ListItemStore(description, "FAKE_ID"));
         return this;
     }
 
     @action.bound
     deleteItem(listItem: ListItemStore): ListStore {
+        //TODO: delete item in database
         this.items = this.items.filter(item => item !== listItem);
         return this;
     }
 
     @action.bound
     setTitle(newTitle: string): ListStore {
+        //TODO: update list in database
         this.title = newTitle;
         debug.log("setting title to '" + newTitle + "'");
         return this;
@@ -51,7 +55,7 @@ export default class ListStore implements IList {
         this.selectedItem = null;
     }
 
-    findItem(itemId: number) {
+    findItem(itemId: string) {
         return this.items.find((item: ListItemStore) => item.id === itemId);
     }
 }

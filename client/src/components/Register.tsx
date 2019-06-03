@@ -55,7 +55,7 @@ class Register extends React.Component<any, any> {
             .then(response => {
                 debug.log(response);
                 if (response.data && response.data.user) {
-                    this.props.rootStore.login(response);
+                    this.props.rootStore.loadDataAndAuthenticate(response);
                 } else {
                     this.setState({attempted: true, password: "", passwordVerification: ""});
                 }

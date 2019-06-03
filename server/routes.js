@@ -11,4 +11,7 @@ router.post('/login', server.login);
 router.post('/register', server.register);
 router.post('/logout', server.logout);
 
+router.put("/update", server.save);
+//TODO: CHANGE ROUTES TO BE MORE SPECIFIC
+
 module.exports = router;

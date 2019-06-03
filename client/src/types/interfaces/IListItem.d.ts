@@ -4,5 +4,5 @@ export default interface IListItem {
     starred: boolean
     dueDate: string
     notes: string
-    id: number
+    id: string
 }

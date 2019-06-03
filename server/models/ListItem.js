@@ -36,9 +36,20 @@ ListItemSchema.statics.create = async (itemDescription, callback) => {
 	return callback ? callback(listItem) : listItem;
 };
 
-ListItemSchema.methods.update = async (itemId, itemFields, callback) => {
-	let listItem = await ListItem.findByIdAndUpdate(itemId, itemFields);
-	return callback ? callback(listItem) : listItem;
+ListItemSchema.statics.updateListItem = async (itemId, itemFields, callback) => {
+	let listItem = await ListItem.findOne({_id: itemId});
+	if (!listItem) {
+		let response = utils.getResponse(401, "List item not found", null);
+		return callback ? callback(response) : response;
+	}
+	for (let field in itemFields) {
+		if (listItem[field] !== undefined && itemFields.hasOwnProperty(field) && listItem[field] !== itemFields[field]) {
+			listItem[field] = itemFields[field];
+		}
+	}
+	await listItem.save(console.log);
+	let response = utils.getResponse(200, "List item successfully updated", listItem);
+	return callback ? callback(response) : response;
 };
 
 const ListItem = mongoose.model('ListItem', ListItemSchema);
