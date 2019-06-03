@@ -46,6 +46,7 @@ ListSchema.statics.createDefault = async (callback) => {
 
 ListSchema.statics.updateList = async (listId, listFields, callback) => {
 	let list = await List.findOne({_id: listId});
+	console.log("LIST MODEL", list.toObject());
 	if (!list) {
 		let response = utils.getResponse(401, "List could not be found", null);
 		return callback ? callback(response) : response;
@@ -65,7 +66,7 @@ ListSchema.methods.delete = async (callback) => {
 	//delete a list
 };
 
-ListSchema.methods.addItem = async (itemDescription) => {
+ListSchema.methods.addItem = async function(itemDescription) {
 	const listItem = await ListItem.create(itemDescription);
 	this.items.push(listItem._id);
 	await this.save(console.log);

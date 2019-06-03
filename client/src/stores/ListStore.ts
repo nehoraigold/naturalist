@@ -18,16 +18,20 @@ export default class ListStore implements IList {
     }
 
     @action.bound
-    addItem(description: string): ListStore {
+    addItem(description: string) {
+        console.log("NEW ITEM DESCRIPTION", description);
         fetch(`http://localhost:${config.server.port}/item`, {
             method: "POST",
-            body: JSON.stringify({listId: this.id, newItemDescription: description})
+            body: JSON.stringify({listId: this.id, newItemDescription: description}),
+            headers: {"Content-Type": "application/json"}
         })
             .then(res => res.json())
             .catch(console.log)
-            .then().catch();
-        this.items.push(new ListItemStore(description, "FAKE_ID"));
-        return this;
+            .then((response) => {
+                console.log(response);
+                this.items.push(new ListItemStore(description, response.data.items.pop()));
+            })
+            .catch(console.log);
     }
 
     @action.bound

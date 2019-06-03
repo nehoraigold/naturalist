@@ -11,7 +11,7 @@ router.post('/login', server.login);
 router.post('/register', server.register);
 router.post('/logout', server.logout);
 
-// router.post('/:object', server.create);
+router.post('/:objectType', server.create);
 
 router.put("/:objectType/:id", server.update);
 

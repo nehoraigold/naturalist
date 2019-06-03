@@ -8,7 +8,7 @@
     "build": "webpack",
     "dev:back": "nodemon server/app.js",
     "dev:front": "webpack-dev-server",
-    "dev": "npm run dev:back && npm run dev:front",
+    "dev": "npm run dev:back & npm run dev:front",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

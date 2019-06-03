@@ -6,7 +6,6 @@ import ListItemStore from "../stores/ListItemStore";
 import ListItemComponent from "./ListItemComponent";
 import AddListItem from "./AddListItem";
 import {ChangeableListTitle} from "./ChangeableListTitle";
-import {computed} from "mobx";
 
 //endregion
 
