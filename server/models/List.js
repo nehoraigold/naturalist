@@ -51,21 +51,29 @@ ListSchema.statics.updateList = async (listId, listFields, callback) => {
 		let response = utils.getResponse(401, "List could not be found", null);
 		return callback ? callback(response) : response;
 	}
+	let msg;
 	if (listFields && listFields.hasOwnProperty("title") && listFields.title) {
 		list.title = listFields.title;
+		msg = "List title changed to " + listFields.title;
 	}
 	if (listFields && listFields.hasOwnProperty("newItemDescription") && listFields.newItemDescription) {
 		await list.addItem(listFields.newItemDescription);
+		msg = "Added new item to list with description: " + listFields.newItemDescription;
+	}
+	if (listFields && listFields.hasOwnProperty('listItemId') && listFields.listItemId) {
+		await list.deleteItem(listFields.listItemId);
+		msg = "Deleted item with ID " + listFields.listItemId + " from list";
 	}
 	await list.save(console.log);
-	let response = utils.getResponse(200, "List updated", list.toObject());
+	let response = utils.getResponse(200, msg, list.toObject());
 	return callback ? callback(response) : response;
 };
 
 ListSchema.methods.deleteItem = function(listItemId) {
-	return ListItem.findOneAndRemove({_id: listItemId}, async (listItem) => {
+	return ListItem.findOneAndDelete({_id: listItemId}, async (listItem) => {
 		this.items = this.items.filter(item => item !== listItem._id);
 		await this.save(console.log);
+		return this;
 	});
 };
 

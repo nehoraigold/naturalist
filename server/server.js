@@ -87,7 +87,6 @@ class Server {
 	updateUser(req, res) {
 		//TODO: implement this for profile/theme changes
 	}
-
 	//endregion
 
 	//region creation functions
@@ -112,7 +111,6 @@ class Server {
 	}
 
 	createListItem(requestBody, res) {
-		console.log("REQUEST BODY", requestBody);
 		return List.updateList(requestBody.listId, requestBody, response => {
 			res.json(response);
 		})
@@ -120,7 +118,37 @@ class Server {
 	//endregion
 
 	//region delete functions
+	delete(req, res) {
+		const {objectType, id} = req.params;
+		if (!id || !objectType || !Object.keys(this.deleteFunctions).includes(objectType)) {
+			return res.json(utils.getResponse(
+				401,
+				"You are trying to delete a non-permissible item or have forgotten to include the id.",
+				null
+			));
+		}
+		try {
+			return this.deleteFunctions[objectType](req.body, res);
+		} catch (ex) {
+			return res.json(utils.getResponse(500, "Something went wrong trying to delete", null));
+		}
+	}
 
+	deleteList() {
+		//TODO: Implement delete list
+	}
+
+	deleteListItem(requestBody, res) {
+		console.log("MADE IT TO DELETE LIST ITEM FUNC", requestBody);
+		return List.updateList(requestBody.listId, requestBody, response => {
+			res.json(response);
+		})
+	}
+
+	deleteUser() {
+		//TODO: Implement delete user
+	}
+	//endregion
 
 }
 

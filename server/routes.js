@@ -15,7 +15,7 @@ router.post('/:objectType', server.create);
 
 router.put("/:objectType/:id", server.update);
 
-// router.delete('/:object/:id', server.delete);
+router.delete('/:objectType/:id', server.delete);
 
 //TODO: CHANGE ROUTES TO BE MORE SPECIFIC
 

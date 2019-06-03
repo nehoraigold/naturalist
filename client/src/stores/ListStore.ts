@@ -43,7 +43,8 @@ export default class ListStore implements IList {
         })
             .then(res => res.json())
             .catch(console.log)
-            .then(() => {
+            .then(response => {
+                console.log(response);
                 this.items = this.items.filter(item => item !== listItem);
             })
             .catch(console.log);
