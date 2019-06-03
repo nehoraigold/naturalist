@@ -35,10 +35,18 @@ export default class ListStore implements IList {
     }
 
     @action.bound
-    deleteItem(listItem: ListItemStore): ListStore {
-        //TODO: delete item in database
-        this.items = this.items.filter(item => item !== listItem);
-        return this;
+    deleteItem(listItem: ListItemStore) {
+        fetch(`http://localhost:${config.server.port}/item/${listItem.id}`, {
+            method: "DELETE",
+            body: JSON.stringify({listId: this.id, listItemId: listItem.id}),
+            headers: {"Content-Type": "application/json"}
+        })
+            .then(res => res.json())
+            .catch(console.log)
+            .then(() => {
+                this.items = this.items.filter(item => item !== listItem);
+            })
+            .catch(console.log);
     }
 
     @action.bound

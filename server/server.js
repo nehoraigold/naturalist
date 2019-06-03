@@ -19,15 +19,21 @@ class Server {
 		this.db.on('error', console.error);
 		this.update = this.update.bind(this);
 		this.create = this.create.bind(this);
+		this.delete = this.delete.bind(this);
 
 		this.updateFunctions = {
 			"list": this.updateList,
 			"item": this.updateListItem,
 			"user": this.updateUser
-		}
+		};
 		this.createFunctions = {
 			"list": this.createList,
 			"item": this.createListItem
+		};
+		this.deleteFunctions = {
+			"user": this.deleteUser,
+			"list": this.deleteList,
+			"item": this.deleteListItem
 		}
 	}
 
@@ -63,7 +69,7 @@ class Server {
 		if (this.updateFunctions[objectType]) {
 			return this.updateFunctions[objectType](id, req.body, res);
 		}
-		return res.json(utils.getResponse(400, "Something went wrong trying to update", null));
+		return res.json(utils.getResponse(500, "Something went wrong trying to update", null));
 	}
 
 	updateListItem(listItemId, listItem, res) {
@@ -97,12 +103,12 @@ class Server {
 		try {
 			return this.createFunctions[objectType](req.body, res);
 		} catch (ex) {
-			return res.json(utils.getResponse(400, "Something went wrong trying to update", null));
+			return res.json(utils.getResponse(500, "Something went wrong trying to create", null));
 		}
 	}
 
 	createList(req, res) {
-
+		//TODO: ADD NEW LIST
 	}
 
 	createListItem(requestBody, res) {
@@ -111,8 +117,10 @@ class Server {
 			res.json(response);
 		})
 	}
-
 	//endregion
+
+	//region delete functions
+
 
 }
 

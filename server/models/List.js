@@ -62,8 +62,11 @@ ListSchema.statics.updateList = async (listId, listFields, callback) => {
 	return callback ? callback(response) : response;
 };
 
-ListSchema.methods.delete = async (callback) => {
-	//delete a list
+ListSchema.methods.deleteItem = function(listItemId) {
+	return ListItem.findOneAndRemove({_id: listItemId}, async (listItem) => {
+		this.items = this.items.filter(item => item !== listItem._id);
+		await this.save(console.log);
+	});
 };
 
 ListSchema.methods.addItem = async function(itemDescription) {
