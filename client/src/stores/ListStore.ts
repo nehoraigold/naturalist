@@ -19,7 +19,13 @@ export default class ListStore implements IList {
 
     @action.bound
     addItem(description: string): ListStore {
-        fetch(`http://localhost:${config.server.port}/save?type=list`)
+        fetch(`http://localhost:${config.server.port}/item`, {
+            method: "POST",
+            body: JSON.stringify({listId: this.id, newItemDescription: description})
+        })
+            .then(res => res.json())
+            .catch(console.log)
+            .then().catch();
         this.items.push(new ListItemStore(description, "FAKE_ID"));
         return this;
     }
@@ -33,7 +39,15 @@ export default class ListStore implements IList {
 
     @action.bound
     setTitle(newTitle: string): ListStore {
-        //TODO: update list in database
+        fetch(`http://localhost:${config.server.port}/list/${this.id}`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({title: this.title})
+        })
+            .then(res => res.json())
+            .catch(console.log)
+            .then(console.log)
+            .catch(console.log);
         this.title = newTitle;
         debug.log("setting title to '" + newTitle + "'");
         return this;

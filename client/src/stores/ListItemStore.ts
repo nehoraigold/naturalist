@@ -29,7 +29,7 @@ export default class ListItemStore implements IListItem {
 
     @action.bound
     saveItemToDatabase() {
-        fetch(`http://localhost:${config.server.port}/save?type=item`, {
+        fetch(`http://localhost:${config.server.port}/item/${this.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(this.asObject)

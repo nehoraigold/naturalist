@@ -11,7 +11,12 @@ router.post('/login', server.login);
 router.post('/register', server.register);
 router.post('/logout', server.logout);
 
-router.put("/update", server.save);
+// router.post('/:object', server.create);
+
+router.put("/:objectType/:id", server.update);
+
+// router.delete('/:object/:id', server.delete);
+
 //TODO: CHANGE ROUTES TO BE MORE SPECIFIC
 
 module.exports = router;

@@ -16,14 +16,19 @@ class Server {
 			.then(() => console.log("Connected to database!")).catch(err => console.log(err));
 		this.db = mongoose.connection;
 		this.db.on('error', console.error);
-		this.saveFunctions = {
-			"list": this.saveList,
-			"item": this.saveListItem,
-			"user": this.saveUser
-		};
-		this.save          = this.save.bind(this);
+		this.update          = this.update.bind(this);
+		this.updateFunctions = {
+			"list": this.updateList,
+			"item": this.updateListItem,
+			"user": this.updateUser
+		}
+		this.createFunctions = {
+			"list": this.createList,
+			"item": this.createListItem
+		}
 	}
 
+	//region user functions
 	async login(req, res) {
 		User.authenticate(req.body.email, req.body.password, response => {
 			res.json(response);
@@ -40,36 +45,46 @@ class Server {
 
 	}
 
-	async save(req, res) {
-		let type = req.query.type;
-		console.log(type);
-		if (this.saveFunctions[type]) {
-			return this.saveFunctions[type](req, res);
+	//endregion
+
+	//region update functions
+	update(req, res) {
+		const { objectType, id } = req.params;
+		if (!id || !objectType || !Object.keys(this.updateFunctions).includes(objectType)) {
+			return res.json(utils.getResponse(
+				401,
+				"You are trying to update a non-permissible item or have forgotten to include the id.",
+				null
+			));
 		}
-		return res.json(utils.getResponse(401, "Attempting to save something that is not savable", null));
-	}
-
-	async saveListItem(req, res) {
-		if (req.body.id) {
-			console.log("UPDATING LIST ITEM", req.body);
-			return ListItem.updateListItem(req.body.id, req.body, response => {
-				res.json(response);
-			});
-		} else {
-			console.log("SAVING LIST ITEM", req.body);
-			return ListItem.create(req.body.description, response => {
-				res.json(response);
-			});
+		if (this.updateFunctions[objectType]) {
+			return this.updateFunctions[objectType](id, req.body, res);
 		}
+		return res.json(utils.getResponse(400, "Something went wrong trying to update", null));
 	}
 
-	async saveList(req, res) {
-
+	updateListItem(listItemId, listItem, res) {
+		return ListItem.updateListItem(listItemId, listItem, response => {
+			res.json(response);
+		});
 	}
 
-	async saveUser(req, res) {
+	updateList(listId, listFields, res) {
+		return List.updateList(listId, listFields, response => {
+			res.json(response);
+		})
+	}
+
+	updateUser(req, res) {
+		//TODO: implement this for profile/theme changes
+	}
+	//endregion
+
+	//region creation functions
+	create(req, res) {
 
 	}
+	//endregion
 
 }
 

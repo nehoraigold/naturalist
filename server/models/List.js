@@ -1,6 +1,7 @@
 //region imports
 const mongoose = require('mongoose');
 const ListItem = require('./ListItem');
+const utils    = require('../utils');
 //endregion
 
 const ListSchema = new mongoose.Schema({
@@ -35,9 +36,9 @@ ListSchema.statics.create = async (listTitle, items, callback) => {
 };
 
 ListSchema.statics.createDefault = async (callback) => {
-	let defaultItem = await ListItem.create("Buy milk");
-	let defaultList = await List.create("To Do", [defaultItem]);
-	defaultList = defaultList.toObject();
+	let defaultItem   = await ListItem.create("Buy milk");
+	let defaultList   = await List.create("To Do", [defaultItem]);
+	defaultList       = defaultList.toObject();
 	defaultList.items = [defaultItem.toObject()];
 	console.log(defaultList);
 	return callback ? callback(defaultList) : defaultList;
