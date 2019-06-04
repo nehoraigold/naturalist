@@ -57,7 +57,7 @@ ListSchema.statics.updateList = async (listId, listFields, callback) => {
 	let msg;
 	if (listFields.hasOwnProperty("title") && listFields.title) {
 		list.title = listFields.title;
-		msg = "List title changed to " + listFields.title;
+		msg        = "List title changed to " + listFields.title;
 	}
 	if (listFields.hasOwnProperty("newItemDescription") && listFields.newItemDescription) {
 		await list.addItem(listFields.newItemDescription);
@@ -74,15 +74,18 @@ ListSchema.statics.updateList = async (listId, listFields, callback) => {
 //endregion
 
 //region instance methods
-ListSchema.methods.deleteItem = function(listItemId) {
-	return ListItem.findOneAndDelete({_id: listItemId}, async (listItem) => {
+ListSchema.methods.deleteItem = function (listItemId) {
+	return ListItem.findOneAndDelete({_id: listItemId}, async (err, listItem) => {
+		if (err) {
+			return console.log(err);
+		}
 		this.items = this.items.filter(item => item !== listItem._id);
 		await this.save(console.log);
 		return this;
 	});
 };
 
-ListSchema.methods.addItem = async function(itemDescription) {
+ListSchema.methods.addItem = async function (itemDescription) {
 	const listItem = await ListItem.create(itemDescription);
 	this.items.push(listItem._id);
 	await this.save(console.log);

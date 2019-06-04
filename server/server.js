@@ -87,6 +87,7 @@ class Server {
 	updateUser(req, res) {
 		//TODO: implement this for profile/theme changes
 	}
+
 	//endregion
 
 	//region creation functions
@@ -117,6 +118,7 @@ class Server {
 			res.json(response);
 		})
 	}
+
 	//endregion
 
 	//region delete functions
@@ -141,7 +143,6 @@ class Server {
 	}
 
 	deleteListItem(requestBody, res) {
-		console.log("MADE IT TO DELETE LIST ITEM FUNC", requestBody);
 		return List.updateList(requestBody.listId, requestBody, response => {
 			res.json(response);
 		})

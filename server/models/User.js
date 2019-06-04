@@ -65,15 +65,15 @@ UserSchema.statics.create = (email, password, callback) => {
 				return console.log(err);
 			}
 			const defaultList = await List.createDefault();
-			let user = new User({
+			let user          = new User({
 				email,
 				password,
 				lists: [defaultList._id],
 				theme: "blue"
 			});
 			await user.save(err => console.log(err));
-			user = user.toObject();
-			user.lists = [defaultList];
+			user           = user.toObject();
+			user.lists     = [defaultList];
 			const response = utils.getResponse(201, "User created", {user});
 			return callback(response);
 		})
@@ -122,7 +122,7 @@ UserSchema.statics.authenticate = (email, password, callback) => {
 	});
 };
 
-UserSchema.methods.addList = async function(listTitle, listItems=[]) {
+UserSchema.methods.addList = async function (listTitle, listItems = []) {
 	const newList = await List.createList(listTitle, listItems);
 	this.lists.push(newList._id);
 	await this.save(console.log);
