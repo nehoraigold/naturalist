@@ -106,8 +106,10 @@ class Server {
 		}
 	}
 
-	createList(req, res) {
-		//TODO: ADD NEW LIST
+	createList(requestBody, res) {
+		return User.createList(requestBody.title, [], response => {
+			res.json(response);
+		})
 	}
 
 	createListItem(requestBody, res) {

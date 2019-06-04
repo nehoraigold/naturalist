@@ -15,6 +15,7 @@ const ListSchema = new mongoose.Schema({
 	}
 });
 
+//region static functions
 ListSchema.statics.findByListId = async (listId, callback) => {
 	return List.findOne({_id: listId}).exec((err, list) => {
 		if (err) {
@@ -24,14 +25,13 @@ ListSchema.statics.findByListId = async (listId, callback) => {
 	});
 };
 
-ListSchema.statics.create = async (listTitle, items, callback) => {
+ListSchema.statics.createList = async (listTitle, items, callback) => {
 	const list = new List({
 		_id: new mongoose.Types.ObjectId(),
 		title: listTitle,
 		items: items ? items.map(item => item._id) : []
 	});
 	await list.save(err => console.log(err));
-	console.log("SAVING LIST", list);
 	return callback ? callback(list) : list;
 };
 
@@ -47,20 +47,23 @@ ListSchema.statics.createDefault = async (callback) => {
 ListSchema.statics.updateList = async (listId, listFields, callback) => {
 	let list = await List.findOne({_id: listId});
 	console.log("LIST MODEL", list.toObject());
-	if (!list) {
-		let response = utils.getResponse(401, "List could not be found", null);
+	if (!list || !listFields) {
+		let response = utils.getResponse(
+			401,
+			!list ? "List could not be found" : "No list updates provided",
+			null);
 		return callback ? callback(response) : response;
 	}
 	let msg;
-	if (listFields && listFields.hasOwnProperty("title") && listFields.title) {
+	if (listFields.hasOwnProperty("title") && listFields.title) {
 		list.title = listFields.title;
 		msg = "List title changed to " + listFields.title;
 	}
-	if (listFields && listFields.hasOwnProperty("newItemDescription") && listFields.newItemDescription) {
+	if (listFields.hasOwnProperty("newItemDescription") && listFields.newItemDescription) {
 		await list.addItem(listFields.newItemDescription);
 		msg = "Added new item to list with description: " + listFields.newItemDescription;
 	}
-	if (listFields && listFields.hasOwnProperty('listItemId') && listFields.listItemId) {
+	if (listFields.hasOwnProperty('listItemId') && listFields.listItemId) {
 		await list.deleteItem(listFields.listItemId);
 		msg = "Deleted item with ID " + listFields.listItemId + " from list";
 	}
@@ -68,7 +71,9 @@ ListSchema.statics.updateList = async (listId, listFields, callback) => {
 	let response = utils.getResponse(200, msg, list.toObject());
 	return callback ? callback(response) : response;
 };
+//endregion
 
+//region instance methods
 ListSchema.methods.deleteItem = function(listItemId) {
 	return ListItem.findOneAndDelete({_id: listItemId}, async (listItem) => {
 		this.items = this.items.filter(item => item !== listItem._id);
@@ -83,6 +88,7 @@ ListSchema.methods.addItem = async function(itemDescription) {
 	await this.save(console.log);
 	return this;
 };
+//endregion
 
 const List = mongoose.model('List', ListSchema);
 

@@ -80,6 +80,28 @@ UserSchema.statics.create = (email, password, callback) => {
 	});
 };
 
+UserSchema.statics.updateUser = async (userId, userFields, callback) => {
+	let user = await User.findOne({_id: userId});
+	if (!user || !userFields) {
+		let response = utils.getResponse(
+			401,
+			!user ? "User could not be found" : "No user updates provided",
+			null);
+		return callback ? callback(response) : response;
+	}
+	let msg;
+	if (userFields.hasOwnProperty('newListTitle') && userFields.newListTitle) {
+		await user.addList(userFields.newListTitle);
+		msg = "Added new list " + userFields.newListTitle;
+	}
+	if (userFields.hasOwnProperty('theme') && userFields.theme) {
+		//TODO: change theme! - maybe make this more general to change email/password/other string inputs
+	}
+	await user.save(console.log);
+	let response = utils.getResponse(200, msg, user.toObject());
+	return callback ? callback(response) : response;
+};
+
 UserSchema.statics.authenticate = (email, password, callback) => {
 	User.find({email}, user => {
 		if (!user) {
@@ -98,6 +120,12 @@ UserSchema.statics.authenticate = (email, password, callback) => {
 			return callback ? callback(response) : response;
 		});
 	});
+};
+
+UserSchema.methods.addList = async function(listTitle, listItems=[]) {
+	const newList = await List.createList(listTitle, listItems);
+	this.lists.push(newList._id);
+	await this.save(console.log);
 };
 
 const User = mongoose.model('User', UserSchema);

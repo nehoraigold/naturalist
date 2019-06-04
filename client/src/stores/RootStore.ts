@@ -6,6 +6,7 @@ import IList from "../types/interfaces/IList";
 import ListStore from "./ListStore";
 import ListItemStore from "./ListItemStore";
 import {debug} from "../DEBUG";
+import * as config from "../../../config.json";
 
 declare const window: any;
 
@@ -25,17 +26,27 @@ class RootStore {
     }
 
     createList(listName: string) {
-        //TODO: create new list in database
-        const newList = this.toDoStore.createNewList(listName, "FAKE_ID"); //TODO: Change this fake id situation
-        this.appStore.selectList(newList);
-        this.appStore.toggleIsCreatingNewList(false);
+        console.log("NEW LIST TITLE", listName);
+        fetch(`http://localhost:${config.server.port}/list`, {
+            method: "POST",
+            body: JSON.stringify({userId: this.appStore, title: listName}),
+            headers: {"Content-Type": "application/json"}
+        })
+            .then(res => res.json())
+            .catch(console.log)
+            .then((response) => {
+                console.log(response);
+                const newList = this.toDoStore.createNewList(response.data.title, response.data._id);
+                this.appStore.selectList(newList);
+                this.appStore.toggleIsCreatingNewList(false);
+            })
+            .catch(console.log);
     }
 
     loadDataAndAuthenticate(serverResponse) {
-        console.log("SERVER RESPONSE HERE", serverResponse);
         this.loadData(serverResponse.data.user.lists);
         this.appStore.selectedList = this.toDoStore.lists[0];
-        this.appStore.authenticate();
+        this.appStore.authenticate(serverResponse.data.user);
     }
 
     loadData(listOfLists) {

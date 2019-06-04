@@ -1,17 +1,21 @@
 //region imports
-import {observable, action} from "mobx";
+import {observable, action, computed} from "mobx";
 import IAppStore from "../types/interfaces/IAppStore";
 import ListStore from "./ListStore";
 import {debug} from "../DEBUG";
+import IUserInfo from "../types/interfaces/IUserInfo";
 //endregion
 
 export class AppStore implements IAppStore {
     ALL_THEMES: Array<string> = ["blue", "green", "purple", "yellow"];
-    @observable selectedTheme: string = "blue";
     @observable isCreatingNewList: boolean = false;
     @observable isEditingListTitle: boolean = false;
     @observable selectedList: null | ListStore = null;
-    @observable authenticated: boolean = false;
+    @observable userInfo: IUserInfo = {
+        email: null,
+        id: null,
+        theme: "blue"
+    };
 
     @action.bound
     toggleIsCreatingNewList(isCreatingNewList: boolean) {
@@ -35,7 +39,7 @@ export class AppStore implements IAppStore {
     setTheme(theme: string) {
         for (let i = 0; i < this.ALL_THEMES.length; i++) {
             if (this.ALL_THEMES[i] === theme) {
-                this.selectedTheme = theme;
+                this.userInfo.theme = theme;
                 this.showTheme();
                 return true;
             }
@@ -44,17 +48,25 @@ export class AppStore implements IAppStore {
     }
 
     @action.bound
-    authenticate() {
-        this.authenticated = true;
+    authenticate(userInfo: object) {
+        for (let prop in userInfo) {
+            if (userInfo.hasOwnProperty(prop) && (this.userInfo.hasOwnProperty(prop) || prop === "_id")) {
+                this.userInfo[prop === "_id" ? "id" : prop] = userInfo[prop];
+            }
+        }
+    }
+
+    @computed get authenticated() {
+        return this.userInfo.id && this.userInfo.email;
     }
 
     showTheme() {
         // @ts-ignore
         document.getElementById('theme').setAttribute(
             "href",
-            `/themes/${this.selectedTheme}.css`
+            `/themes/${this.userInfo.theme}.css`
         );
-        debug.log("theme changed to " + this.selectedTheme);
+        debug.log("theme changed to " + this.userInfo.theme);
     }
 }
 
