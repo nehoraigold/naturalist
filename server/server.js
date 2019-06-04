@@ -107,7 +107,7 @@ class Server {
 	}
 
 	createList(requestBody, res) {
-		return User.createList(requestBody.title, [], response => {
+		return User.updateUser(requestBody.userId, {newListTitle: requestBody.title}, response => {
 			res.json(response);
 		})
 	}

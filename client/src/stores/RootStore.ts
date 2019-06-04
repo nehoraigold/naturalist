@@ -13,6 +13,7 @@ declare const window: any;
 //endregion
 
 class RootStore {
+    //TODO: Eventually, consolidate to one store -- no need for separate app and todo stores now that listcounter is obsolete
     @observable toDoStore: ToDoStore = toDoStore;
     @observable appStore: AppStore = appStore;
 
@@ -29,14 +30,14 @@ class RootStore {
         console.log("NEW LIST TITLE", listName);
         fetch(`http://localhost:${config.server.port}/list`, {
             method: "POST",
-            body: JSON.stringify({userId: this.appStore, title: listName}),
+            body: JSON.stringify({userId: this.appStore.userInfo.id, title: listName}),
             headers: {"Content-Type": "application/json"}
         })
             .then(res => res.json())
             .catch(console.log)
             .then((response) => {
                 console.log(response);
-                const newList = this.toDoStore.createNewList(response.data.title, response.data._id);
+                const newList = this.toDoStore.createNewList(listName, response.data.lists.pop());
                 this.appStore.selectList(newList);
                 this.appStore.toggleIsCreatingNewList(false);
             })
