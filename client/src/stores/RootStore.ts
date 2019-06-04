@@ -1,5 +1,5 @@
 //region imports
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import {AppStore, appStore} from "./AppStore";
 import {ToDoStore, toDoStore} from "./ToDoStore";
 import IList from "../types/interfaces/IList";
@@ -7,6 +7,7 @@ import ListStore from "./ListStore";
 import ListItemStore from "./ListItemStore";
 import {debug} from "../DEBUG";
 import * as config from "../../../config.json";
+import App from "../components/App";
 
 declare const window: any;
 
@@ -14,6 +15,7 @@ declare const window: any;
 
 class RootStore {
     //TODO: Eventually, consolidate to one store -- no need for separate app and todo stores now that listcounter is obsolete
+    //TODO: For all fetch functions - add a loading gif
     @observable toDoStore: ToDoStore = toDoStore;
     @observable appStore: AppStore = appStore;
 
@@ -42,6 +44,11 @@ class RootStore {
                 this.appStore.toggleIsCreatingNewList(false);
             })
             .catch(console.log);
+    }
+
+    logoutAndWipeData() {
+        this.appStore = new AppStore();
+        this.toDoStore = new ToDoStore();
     }
 
     loadDataAndAuthenticate(serverResponse) {
