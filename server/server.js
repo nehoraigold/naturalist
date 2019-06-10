@@ -20,7 +20,7 @@ class Server {
 		this.update = this.update.bind(this);
 		this.create = this.create.bind(this);
 		this.delete = this.delete.bind(this);
-
+		this.latestRequestTimestamp = null;
 		this.updateFunctions = {
 			"list": this.updateList,
 			"item": this.updateListItem,
@@ -66,7 +66,8 @@ class Server {
 				null
 			));
 		}
-		if (this.updateFunctions[objectType]) {
+		if (this.updateFunctions[objectType] && req.body.timestamp > this.latestRequestTimestamp) {
+			this.latestRequestTimestamp = req.body.timestamp;
 			return this.updateFunctions[objectType](id, req.body, res);
 		}
 		return res.json(utils.getResponse(500, "Something went wrong trying to update", null));

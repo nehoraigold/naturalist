@@ -24,6 +24,7 @@ export default class ListItemStore implements IListItem {
                 listItemObject[prop] = this[prop];
             }
         }
+        listItemObject.timestamp = Date.now();
         return listItemObject;
     }
 

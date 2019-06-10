@@ -22,7 +22,7 @@ export default class ListStore implements IList {
         console.log("NEW ITEM DESCRIPTION", description);
         fetch(`http://localhost:${config.server.port}/item`, {
             method: "POST",
-            body: JSON.stringify({listId: this.id, newItemDescription: description}),
+            body: JSON.stringify({listId: this.id, newItemDescription: description, timestamp: Date.now()}),
             headers: {"Content-Type": "application/json"}
         })
             .then(res => res.json())
@@ -51,19 +51,20 @@ export default class ListStore implements IList {
     }
 
     @action.bound
-    setTitle(newTitle: string): ListStore {
+    setTitle(newTitle: string) {
         fetch(`http://localhost:${config.server.port}/list/${this.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({title: this.title})
+            body: JSON.stringify({title: this.title, timestamp: Date.now()})
         })
             .then(res => res.json())
             .catch(console.log)
-            .then(console.log)
+            .then(() => {
+                this.title = newTitle;
+                debug.log("setting title to '" + newTitle + "'");
+            })
             .catch(console.log);
-        this.title = newTitle;
-        debug.log("setting title to '" + newTitle + "'");
-        return this;
+
     }
 
     returnListItems(completeBool: boolean) {

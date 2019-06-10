@@ -49,7 +49,7 @@ class RootStore {
         console.log("List ID to delete:", listId);
         fetch(`http://localhost:${config.server.port}/list/${listId}`, {
             method: "DELETE",
-            body: JSON.stringify({userId: this.appStore.userInfo.id, listId}),
+            body: JSON.stringify({userId: this.appStore.userInfo.id, listId, timestamp: Date.now()}),
             headers: {"Content-Type": "application/json"}
         })
             .then(res => res.json())
