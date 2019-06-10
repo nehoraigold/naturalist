@@ -1,10 +1,11 @@
 //region imports
-const express    = require('express');
-const path       = require('path');
-const bodyParser = require('body-parser');
-const cors       = require('cors');
-const config     = require('../config.json');
-const router     = require('./routes');
+const express          = require('express');
+const path             = require('path');
+const bodyParser       = require('body-parser');
+const cors             = require('cors');
+const config           = require('../config.json');
+const router           = require('./routes');
+
 //endregion
 
 const app = express();

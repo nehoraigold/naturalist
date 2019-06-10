@@ -35,9 +35,19 @@ ListSchema.statics.createList = async (listTitle, items, callback) => {
 	return callback ? callback(list) : list;
 };
 
+ListSchema.statics.deleteList = (listId) => {
+	return List.findByListId(listId, async list => {
+		if (!list) {
+			console.log("NO LIST FOUND TO DELETE", list);
+		}
+		await list.deleteAllItems();
+		list.remove(console.log);
+	});
+};
+
 ListSchema.statics.createDefault = async (callback) => {
 	let defaultItem   = await ListItem.create("Buy milk");
-	let defaultList   = await List.create("To Do", [defaultItem]);
+	let defaultList   = await List.createList("To Do", [defaultItem]);
 	defaultList       = defaultList.toObject();
 	defaultList.items = [defaultItem.toObject()];
 	console.log(defaultList);
@@ -79,8 +89,7 @@ ListSchema.methods.deleteItem = function (listItemId) {
 		if (err) {
 			return console.log(err);
 		}
-		this.items = this.items.filter(item => item !== listItem._id);
-		await this.save(console.log);
+		this.items = this.items.filter(item => item.toString() !== listItem._id.toString());
 		return this;
 	});
 };
@@ -88,7 +97,12 @@ ListSchema.methods.deleteItem = function (listItemId) {
 ListSchema.methods.addItem = async function (itemDescription) {
 	const listItem = await ListItem.create(itemDescription);
 	this.items.push(listItem._id);
-	await this.save(console.log);
+	return this;
+};
+
+ListSchema.methods.deleteAllItems = async function() {
+	await ListItem.deleteMany({_id: {$in: this.items}});
+	this.items = [];
 	return this;
 };
 //endregion

@@ -17,6 +17,4 @@ router.put("/:objectType/:id", server.update);
 
 router.delete('/:objectType/:id', server.delete);
 
-//TODO: CHANGE ROUTES TO BE MORE SPECIFIC
-
 module.exports = router;

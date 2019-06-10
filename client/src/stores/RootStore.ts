@@ -1,5 +1,5 @@
 //region imports
-import {action, observable} from "mobx";
+import {observable} from "mobx";
 import {AppStore, appStore} from "./AppStore";
 import {ToDoStore, toDoStore} from "./ToDoStore";
 import IList from "../types/interfaces/IList";
@@ -7,7 +7,6 @@ import ListStore from "./ListStore";
 import ListItemStore from "./ListItemStore";
 import {debug} from "../DEBUG";
 import * as config from "../../../config.json";
-import App from "../components/App";
 
 declare const window: any;
 
@@ -42,6 +41,26 @@ class RootStore {
                 const newList = this.toDoStore.createNewList(listName, response.data.lists.pop());
                 this.appStore.selectList(newList);
                 this.appStore.toggleIsCreatingNewList(false);
+            })
+            .catch(console.log);
+    }
+
+    deleteList(listId: string) {
+        console.log("List ID to delete:", listId);
+        fetch(`http://localhost:${config.server.port}/list/${listId}`, {
+            method: "DELETE",
+            body: JSON.stringify({userId: this.appStore.userInfo.id, listId}),
+            headers: {"Content-Type": "application/json"}
+        })
+            .then(res => res.json())
+            .catch(console.log)
+            .then((response) => {
+                console.log(response);
+                const list = this.toDoStore.lists.find(list => list.id === listId);
+                const index = list ? this.toDoStore.lists.indexOf(list) : 0;
+                const newIndex = Math.max(index - 1, 0);
+                this.toDoStore.lists = this.toDoStore.lists.filter(list => list.id !== listId);
+                this.appStore.selectedList = this.toDoStore.lists[newIndex];
             })
             .catch(console.log);
     }

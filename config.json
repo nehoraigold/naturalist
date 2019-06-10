@@ -5,7 +5,6 @@
       "name": "naturalist",
       "protocol": "mongodb+srv",
       "username": "admin",
-      "password": "root",
       "url": "naturalist-28qec.mongodb.net"
     }
   },

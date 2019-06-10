@@ -138,8 +138,11 @@ class Server {
 		}
 	}
 
-	deleteList() {
-		//TODO: Implement delete list
+	deleteList(requestBody, res) {
+		const { userId, listId } = requestBody;
+		return User.updateUser(userId, {listId}, response => {
+			res.json(response);
+		});
 	}
 
 	deleteListItem(requestBody, res) {

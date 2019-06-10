@@ -40,7 +40,7 @@ ListItemSchema.statics.create = async (itemDescription, callback) => {
 ListItemSchema.statics.updateListItem = async (itemId, itemFields, callback) => {
 	let listItem = await ListItem.findOne({_id: itemId});
 	if (!listItem) {
-		let response = utils.getResponse(401, "List item not found", null);
+		let response = utils.getResponse(400, "List item not found", null);
 		return callback ? callback(response) : response;
 	}
 	for (let field in itemFields) {

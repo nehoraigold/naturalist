@@ -13,11 +13,6 @@ export class ToDoStore implements IToDoStore {
         this.lists.push(newList);
         return newList;
     }
-
-    @action.bound
-    deleteList(listID: string) {
-        this.lists = this.lists.filter(list => list.id !== listID);
-    }
 }
 
 export const toDoStore = new ToDoStore();

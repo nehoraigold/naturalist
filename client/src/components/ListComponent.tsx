@@ -17,6 +17,7 @@ class ListComponent extends React.Component<any, any> {
         this.renderListItems = this.renderListItems.bind(this);
         this.renderProperTitle = this.renderProperTitle.bind(this);
         this.editListTitle = this.editListTitle.bind(this);
+        this.deleteList = this.deleteList.bind(this);
     }
 
     renderListItems(completeBool: boolean): Array<ListItemComponent> {
@@ -32,13 +33,19 @@ class ListComponent extends React.Component<any, any> {
         this.props.rootStore.appStore.toggleIsEditingListTitle(true);
     }
 
+    deleteList() {
+        let currentListId = this.props.rootStore.appStore.selectedList.id;
+        this.props.rootStore.deleteList(currentListId);
+    }
+
     renderProperTitle() {
         return this.props.rootStore.appStore.isEditingListTitle ?
             <ChangeableListTitle/> :
             <div>
                 <h3 className='list-title'>
                     {this.props.rootStore.appStore.selectedList.title}
-                    <span className="fas fa-trash-alt list-title-icon trash-can"/>
+                    <span className="fas fa-trash-alt list-title-icon trash-can"
+                          onClick={this.deleteList}/>
                     <span className='fas fa-pencil-alt list-title-icon'
                           onClick={this.editListTitle}
                     />
