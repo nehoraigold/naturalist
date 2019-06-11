@@ -94,12 +94,18 @@ UserSchema.statics.updateUser = async (userId, userFields, callback) => {
 		await user.addList(userFields.newListTitle);
 		msg = "Added new list " + userFields.newListTitle;
 	}
-	if (userFields.hasOwnProperty('theme') && userFields.theme) {
-		//TODO: change theme! - maybe make this more general to change email/password/other string inputs
-	}
 	if (userFields.hasOwnProperty('listId') && userFields.listId) {
 		await user.deleteList(userFields.listId);
 		msg = `List ${userFields.listId} deleted`;
+	}
+	if (Object.keys(user.toObject()).some(field => userFields.hasOwnProperty(field))) {
+		msg = "The following fields have been updated: ";
+		Object.keys(userFields).forEach(key => {
+			if (user[key]) {
+				user[key] = userFields[key];
+				msg += key;
+			}
+		})
 	}
 	await user.save(console.log);
 	let response = utils.getResponse(200, msg, user.toObject());

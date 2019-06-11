@@ -85,8 +85,10 @@ class Server {
 		})
 	}
 
-	updateUser(req, res) {
-		//TODO: implement this for profile/theme changes
+	updateUser(userId, userFields, res) {
+		return User.updateUser(userId, userFields, response => {
+			res.json(response);
+		})
 	}
 
 	//endregion

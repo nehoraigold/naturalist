@@ -10,7 +10,7 @@ import IList from "../types/interfaces/IList";
 import {Theme} from "../types/enums/Theme";
 //endregion
 
-export default class Store implements IStore {
+class Store implements IStore {
     @observable isCreatingNewList: boolean = false;
     @observable isEditingListTitle: boolean = false;
     @observable selectedList: null | ListStore = null;
@@ -131,7 +131,7 @@ export default class Store implements IStore {
     saveTheme() {
         fetch(`http://localhost:${config.server.port}/user/${this.user.id}`, {
             method: "PUT",
-            body: JSON.stringify({theme: this.user.theme}),
+            body: JSON.stringify({theme: this.user.theme, timestamp: Date.now()}),
             headers: {"Content-Type": "application/json"}
         })
             .then(res => res.json())
@@ -144,6 +144,7 @@ export default class Store implements IStore {
     loadDataAndAuthenticate(serverResponse) {
         this.loadData(serverResponse.data.user.lists);
         this.selectedList = this.lists[0];
+        this.setTheme(serverResponse.data.user.theme);
         this.authenticate(serverResponse.data.user);
     }
 
