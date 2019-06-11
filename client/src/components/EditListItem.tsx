@@ -10,7 +10,7 @@ import "../css/EditListItem.css";
 
 //TODO: add proper typing to everything
 
-@inject('rootStore')
+@inject('store')
 @observer
 class EditListItem extends React.Component<any, any> {
     constructor(props: any) {
@@ -21,13 +21,13 @@ class EditListItem extends React.Component<any, any> {
 
     deleteItem(e: any) {
         e.preventDefault();
-        this.props.rootStore.appStore.selectedList.deleteItem(this.props.rootStore.appStore.selectedList.selectedItem);
-        this.props.rootStore.appStore.selectedList.deselectItem();
+        this.props.store.selectedList.deleteItem(this.props.store.selectedList.selectedItem);
+        this.props.store.selectedList.deselectItem();
     }
 
     closeEditItemScreen(e: any) {
         e.preventDefault();
-        this.props.rootStore.appStore.selectedList.deselectItem();
+        this.props.store.selectedList.deselectItem();
     }
 
     render() {
@@ -35,9 +35,9 @@ class EditListItem extends React.Component<any, any> {
             <div className='list-item-edit-container half-size'>
                 <div className='list-item-edit-screen'>
                     <h4>
-                        Edit Task: {this.props.rootStore.appStore.selectedList.selectedItem.description.length > 20 ?
-                            `${this.props.rootStore.appStore.selectedList.selectedItem.description.slice(0,20)}...` :
-                            this.props.rootStore.appStore.selectedList.selectedItem.description}
+                        Edit Task: {this.props.store.selectedList.selectedItem.description.length > 20 ?
+                            `${this.props.store.selectedList.selectedItem.description.slice(0,20)}...` :
+                            this.props.store.selectedList.selectedItem.description}
                         <span onClick={this.closeEditItemScreen}
                               className="fas fa-times-circle edit-task-header-icon"/>
                     </h4>

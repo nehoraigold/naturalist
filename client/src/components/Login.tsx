@@ -7,7 +7,7 @@ import * as config from "../../../config.json";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class Login extends React.Component<any, any> {
     constructor(props) {
@@ -46,7 +46,7 @@ class Login extends React.Component<any, any> {
             .catch(err => console.log(err));
         debug.log(response);
         if (response.data && response.data.user) {
-            this.props.rootStore.loadDataAndAuthenticate(response);
+            this.props.store.loadDataAndAuthenticate(response);
         } else {
             this.setState({attempted: true, password: ""});
         }

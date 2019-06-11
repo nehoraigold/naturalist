@@ -5,7 +5,7 @@ import "../css/SideMenu.css";
 import ListStore from "../stores/ListStore";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class SideMenu extends React.Component<any, any> {
     constructor(props: any) {
@@ -16,27 +16,27 @@ class SideMenu extends React.Component<any, any> {
     }
 
     createNewList() {
-        if (this.props.rootStore.appStore.selectedList.title.trim() === "") {
+        if (this.props.store.selectedList.title.trim() === "") {
             return;
         }
-        this.props.rootStore.appStore.toggleIsEditingListTitle(false);
-        this.props.rootStore.appStore.toggleIsCreatingNewList(true);
+        this.props.store.toggleIsEditingListTitle(false);
+        this.props.store.toggleIsCreatingNewList(true);
     }
 
     changeSelectedList(event: any) {
-        if (this.props.rootStore.appStore.selectedList.title === "") {
+        if (this.props.store.selectedList.title === "") {
             return;
         }
-        this.props.rootStore.appStore.toggleIsCreatingNewList(false);
+        this.props.store.toggleIsCreatingNewList(false);
         const selectedListId = event.target.getAttribute("data-list-id");
-        this.props.rootStore.selectList(selectedListId);
+        this.props.store.selectList(selectedListId);
 
     }
 
     renderListTitles(): Array<HTMLLIElement> {
-        return this.props.rootStore.toDoStore.lists.map((list:ListStore) =>
-            <li className={`${this.props.rootStore.appStore.isCreatingNewList ? "" :
-                    (list === this.props.rootStore.appStore.selectedList ? "current-list-title" : "")}`}
+        return this.props.store.lists.map((list:ListStore) =>
+            <li className={`${this.props.store.isCreatingNewList ? "" :
+                    (list === this.props.store.selectedList ? "current-list-title" : "")}`}
                 key={list.id}
                 data-list-id={list.id}
                 onClick={this.changeSelectedList}>{list.title}</li>)
@@ -48,7 +48,7 @@ class SideMenu extends React.Component<any, any> {
                 <ul className='all-list-titles'>
                     {this.renderListTitles()}
                     <li onClick={this.createNewList}
-                        className={`${this.props.rootStore.appStore.isCreatingNewList ? "current-list-title" : ""}`}
+                        className={`${this.props.store.isCreatingNewList ? "current-list-title" : ""}`}
                         key={"+"}>
                         +
                     </li>

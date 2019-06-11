@@ -3,10 +3,11 @@ import * as React from "react";
 import {observer, inject} from "mobx-react";
 import "../css/TopMenu.css";
 import {Link} from "react-router-dom";
+import {Theme} from "../types/enums/Theme";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class TopMenu extends React.Component<any, any> {
     constructor(props: any) {
@@ -18,16 +19,16 @@ class TopMenu extends React.Component<any, any> {
 
     changeTheme(e: any) {
         const newTheme = e.target.classList[1];
-        this.props.rootStore.appStore.setTheme(newTheme);
+        this.props.store.setTheme(newTheme);
     }
 
     logout() {
         //TODO: actually implement this
-        this.props.rootStore.logoutAndWipeData();
+        this.props.store.logoutAndWipeData();
     }
 
     renderThemeBoxes(): any {
-        return this.props.rootStore.appStore.ALL_THEMES.map((theme: string) =>
+        return Object.keys(Theme).map((theme: string) =>
             <div key={theme}
                  onClick={this.changeTheme}
                  className={`theme-box ${theme}`}
@@ -43,7 +44,7 @@ class TopMenu extends React.Component<any, any> {
                         NaturaList
                     </span>
                 </span>
-                {this.props.rootStore.appStore.authenticated ?
+                {this.props.store.authenticated ?
                     <a onClick={this.logout}>Logout</a> :
                     <Link to={"/register"} className={"register"}>Sign up</Link>}
                 <div className='themes'>

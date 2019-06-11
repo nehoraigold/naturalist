@@ -4,7 +4,7 @@ import {observer, inject} from "mobx-react";
 import "../css/AddListItem.css";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class AddListItem extends React.Component<any,any> {
     private input:any;
@@ -19,7 +19,7 @@ class AddListItem extends React.Component<any,any> {
         }
         //@ts-ignore
         if ((event.target.tagName === "INPUT" && event.keyCode === 13) || (event.target.tagName === "BUTTON")) {
-            this.props.rootStore.appStore.selectedList.addItem(this.input.value);
+            this.props.store.selectedList.addItem(this.input.value);
             this.input.value = "";
         }
     }

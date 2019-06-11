@@ -9,7 +9,7 @@ import {ChangeableListTitle} from "./ChangeableListTitle";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class ListComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -21,7 +21,7 @@ class ListComponent extends React.Component<any, any> {
     }
 
     renderListItems(completeBool: boolean): Array<ListItemComponent> {
-        let listItems = this.props.rootStore.appStore.selectedList.returnListItems(completeBool);
+        let listItems = this.props.store.selectedList.returnListItems(completeBool);
         return listItems.map((item: ListItemStore) => <ListItemComponent key={item.id} id={item.id}/>);
     }
 
@@ -30,20 +30,20 @@ class ListComponent extends React.Component<any, any> {
     }
 
     editListTitle() {
-        this.props.rootStore.appStore.toggleIsEditingListTitle(true);
+        this.props.store.toggleIsEditingListTitle(true);
     }
 
     deleteList() {
-        let currentListId = this.props.rootStore.appStore.selectedList.id;
-        this.props.rootStore.deleteList(currentListId);
+        let currentListId = this.props.store.selectedList.id;
+        this.props.store.deleteList(currentListId);
     }
 
     renderProperTitle() {
-        return this.props.rootStore.appStore.isEditingListTitle ?
+        return this.props.store.isEditingListTitle ?
             <ChangeableListTitle/> :
             <div>
                 <h3 className='list-title'>
-                    {this.props.rootStore.appStore.selectedList.title}
+                    {this.props.store.selectedList.title}
                     <span className="fas fa-trash-alt list-title-icon trash-can"
                           onClick={this.deleteList}/>
                     <span className='fas fa-pencil-alt list-title-icon'

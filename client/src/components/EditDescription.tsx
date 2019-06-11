@@ -5,7 +5,7 @@ import ListItemStore from "../stores/ListItemStore";
 import {observable} from "mobx";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class EditDescription extends React.Component<any, any> {
     private descriptionInput: any;
@@ -17,7 +17,7 @@ class EditDescription extends React.Component<any, any> {
 
     onChange() {
         const description = this.descriptionInput.value;
-        this.props.rootStore.appStore.selectedList.selectedItem.setDescription(description);
+        this.props.store.selectedList.selectedItem.setDescription(description);
     }
 
     render() {
@@ -29,7 +29,7 @@ class EditDescription extends React.Component<any, any> {
                 <td colSpan={2}>
                 <textarea ref={(description) => this.descriptionInput = description}
                           placeholder="Add a description..."
-                          value={this.props.rootStore.appStore.selectedList.selectedItem.description}
+                          value={this.props.store.selectedList.selectedItem.description}
                           className='edit-task-input'
                           rows={3}
                           onChange={this.onChange}/>

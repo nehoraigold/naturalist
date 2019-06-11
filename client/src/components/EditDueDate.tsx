@@ -4,7 +4,7 @@ import {inject, observer} from "mobx-react";
 import ListItemStore from "../stores/ListItemStore";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class EditDueDate extends Component<any,any> {
     private dueDateInput: any;
@@ -16,7 +16,7 @@ class EditDueDate extends Component<any,any> {
 
     onChange() {
         const dueDate = this.dueDateInput.value;
-        this.props.rootStore.appStore.selectedList.selectedItem.setDueDate(dueDate);
+        this.props.store.selectedList.selectedItem.setDueDate(dueDate);
     }
 
     render() {
@@ -29,7 +29,7 @@ class EditDueDate extends Component<any,any> {
                     <input ref={(dueDate) => {this.dueDateInput = dueDate}}
                            type='date'
                            className='edit-task-input'
-                           value={this.props.rootStore.appStore.selectedList.selectedItem.dueDate}
+                           value={this.props.store.selectedList.selectedItem.dueDate}
                            onChange={this.onChange}/>
                 </td>
             </tr>

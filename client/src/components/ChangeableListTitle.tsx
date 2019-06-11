@@ -4,7 +4,7 @@ import {inject, observer} from "mobx-react";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 export class ChangeableListTitle extends React.Component<any, any> {
     private input: any;
@@ -15,8 +15,8 @@ export class ChangeableListTitle extends React.Component<any, any> {
         this.confirmList = this.confirmList.bind(this);
         this.cancelList = this.cancelList.bind(this);
         this.state = {
-            title: this.props.rootStore.appStore.isEditingListTitle ?
-                this.props.rootStore.appStore.selectedList.title : ""
+            title: this.props.store.isEditingListTitle ?
+                this.props.store.selectedList.title : ""
         }
     }
 
@@ -25,11 +25,11 @@ export class ChangeableListTitle extends React.Component<any, any> {
             return false;
         }
         if ((event.target.tagName === "INPUT" && event.keyCode === 13) || (event.target.tagName === "SPAN")) {
-            if (this.props.rootStore.appStore.isCreatingNewList) {
+            if (this.props.store.isCreatingNewList) {
                 let newListName = this.input.value;
-                this.props.rootStore.createList(newListName);
-            } else if (this.props.rootStore.appStore.isEditingListTitle) {
-                this.props.rootStore.appStore.toggleIsEditingListTitle(false);
+                this.props.store.createList(newListName);
+            } else if (this.props.store.isEditingListTitle) {
+                this.props.store.toggleIsEditingListTitle(false);
             }
         }
     }
@@ -37,13 +37,13 @@ export class ChangeableListTitle extends React.Component<any, any> {
     changeInput(event: ChangeEvent) {
         let title = (event.target as HTMLInputElement).value;
         this.setState({title});
-        if (this.props.rootStore.appStore.isEditingListTitle) {
-            this.props.rootStore.appStore.selectedList.setTitle(title);
+        if (this.props.store.isEditingListTitle) {
+            this.props.store.selectedList.setTitle(title);
         }
     }
 
     cancelList() {
-        this.props.rootStore.appStore.toggleIsCreatingNewList(false);
+        this.props.store.toggleIsCreatingNewList(false);
     }
 
     render() {
@@ -57,7 +57,7 @@ export class ChangeableListTitle extends React.Component<any, any> {
                        onKeyUp={this.confirmList}
                        ref={input => this.input = input}
                        value={this.state.title}/>
-                {this.props.rootStore.appStore.isCreatingNewList ?
+                {this.props.store.isCreatingNewList ?
                     <span onClick={this.cancelList}
                           className="fas fa-times-circle list-title-icon proto-list-option"
                     /> : null

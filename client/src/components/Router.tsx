@@ -9,7 +9,7 @@ import Register from "./Register";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class Router extends React.Component<any, any> {
     constructor(props) {
@@ -21,14 +21,14 @@ class Router extends React.Component<any, any> {
             <BrowserRouter>
                 <TopMenu/>
                 <Switch>
-                    <Route className={this.props.rootStore.appStore.authenticated}
-                           path="/login" render={() => this.props.rootStore.appStore.authenticated ?
+                    <Route className={this.props.store.authenticated}
+                           path="/login" render={() => this.props.store.authenticated ?
                             <Redirect to="/"/> : <Login/> }/>
-                    <Route className={this.props.rootStore.appStore.authenticated}
-                           path="/register" render={() => this.props.rootStore.appStore.authenticated ?
+                    <Route className={this.props.store.authenticated}
+                           path="/register" render={() => this.props.store.authenticated ?
                         <Redirect to="/"/> : <Register/>} />
-                    <Route className={this.props.rootStore.appStore.authenticated}
-                           path="/" render={() => this.props.rootStore.appStore.authenticated ?
+                    <Route className={this.props.store.authenticated}
+                           path="/" render={() => this.props.store.authenticated ?
                             <App/> : <Redirect to="/login"/>}/>
                 </Switch>
             </BrowserRouter>

@@ -6,7 +6,7 @@ import {debug} from "../DEBUG";
 import * as config from "../../../config.json";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class Register extends React.Component<any, any> {
     private form;
@@ -55,7 +55,7 @@ class Register extends React.Component<any, any> {
             .then(response => {
                 debug.log(response);
                 if (response.data && response.data.user) {
-                    this.props.rootStore.loadDataAndAuthenticate(response);
+                    this.props.store.loadDataAndAuthenticate(response);
                 } else {
                     this.setState({attempted: true, password: "", passwordVerification: ""});
                 }

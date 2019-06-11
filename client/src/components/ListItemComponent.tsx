@@ -8,7 +8,7 @@ import {debug} from "../DEBUG";
 
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class ListItemComponent extends React.Component<any, any> {
     public item: ListItemStore;
@@ -16,7 +16,7 @@ class ListItemComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.selectListItem = this.selectListItem.bind(this);
-        this.item = this.props.rootStore.appStore.selectedList.findItem(this.props.id);
+        this.item = this.props.store.selectedList.findItem(this.props.id);
     }
 
     @computed get renderDueDateIfNeeded() {
@@ -29,7 +29,7 @@ class ListItemComponent extends React.Component<any, any> {
     }
 
     selectListItem() {
-        this.props.rootStore.appStore.selectedList.selectItem(this.item);
+        this.props.store.selectedList.selectItem(this.item);
         debug.log('new selected item: ' + this.item.description);
     }
 

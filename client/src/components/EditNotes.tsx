@@ -4,7 +4,7 @@ import {inject, observer} from "mobx-react";
 import ListItemStore from "../stores/ListItemStore";
 //endregion
 
-@inject('rootStore')
+@inject('store')
 @observer
 class EditNotes extends React.Component<any, any> {
     private notesInput: any;
@@ -16,7 +16,7 @@ class EditNotes extends React.Component<any, any> {
 
     onChange() {
         const notes = this.notesInput.value;
-        this.props.rootStore.appStore.selectedList.selectedItem.setNotes(notes);
+        this.props.store.selectedList.selectedItem.setNotes(notes);
     }
 
     render() {
@@ -30,7 +30,7 @@ class EditNotes extends React.Component<any, any> {
                               className='edit-task-input'
                               placeholder="Add notes..."
                               rows={5}
-                              value={this.props.rootStore.appStore.selectedList.selectedItem.notes}
+                              value={this.props.store.selectedList.selectedItem.notes}
                               onChange={this.onChange}/>
                 </td>
             </tr>

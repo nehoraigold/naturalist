@@ -3,12 +3,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Router from "./components/Router";
 import {Provider} from "mobx-react";
-import {rootStore} from "./stores/RootStore";
+import {store} from "./stores/Store";
 //endregion
 
 function ready() {
     ReactDOM.render(
-        <Provider rootStore={rootStore}>
+        <Provider store={store}>
             <Router/>
         </Provider>,
         document.getElementById('root')
