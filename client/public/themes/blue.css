@@ -18,7 +18,7 @@ body::after {
     background: rgba(0, 70, 155);
 }
 
-.top-menu {
+.top-menu, .theme-box {
     background-color:rgba(0, 70, 155, 0.9);
 }
 
@@ -26,7 +26,7 @@ body::after {
     color:rgb(221,221,221);
 }
 
-.side-menu {
+.side-menu, .menu-link:hover {
     background-color: rgba(0, 122, 197, 0.7);
 }
 

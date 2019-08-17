@@ -27,66 +27,84 @@
     cursor: pointer;
 }
 
-.themes {
-    padding: 10px;
-    color: white;
-    font-size: 10px;
-    text-transform: uppercase;
+.right-menu {
     float: right;
-    right: 15px;
-    position: relative;
 }
 
-.theme-boxes {
-    position: absolute;
-    display: flex;
-    top: 8px;
-    right: 5px;
-    opacity: 0;
-    transition: all .5s ease;
-}
-
-.theme-box {
-    height: 16px;
-    width: 16px;
-    border: 1px solid black;
+.menu-link {
     display: inline-block;
-    vertical-align: middle;
-    margin: 0 5px;
-    box-shadow: 1px 1px 1px black;
+    padding: 10px;
+    vertical-align: top;
+    transition: 0.2s ease all;
+    height: 40px;
+}
+
+.menu-link:hover {
+    text-decoration: none;
+}
+
+.theme-submenu {
+    display: inline-block;
+    height: 40px;
+}
+
+.themes-label {
     cursor: pointer;
 }
 
-.themes .themes-label {
-    right: 0;
-    transition: all .5s ease-out;
-    position: relative;
-}
-
-.themes:hover .themes-label {
-    right: 110px;
-}
-
-.themes:hover .theme-boxes {
+.theme-submenu:hover .themes {
+    display: block;
     opacity: 1;
+    pointer-events: auto;
+    z-index: auto;
+}
+
+.themes {
+    position: relative;
+    top: -10px;
+    padding-top: 10px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s ease all;
+}
+
+.theme-box {
+    position: relative;
+    left: 0;
+    color: white;
+    cursor: pointer;
+    text-transform: capitalize;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 4px;
+    transition: 0.2s ease all;
+}
+
+.theme-box:hover {
+    left: -10px;
 }
 
 .theme-box.selected {
     border-color: white;
+    color: black;
 }
 
-.theme-box.blue {
+.theme-box.blue:hover {
     background-color: rgb(0, 159, 232);
 }
 
-.theme-box.green {
+.theme-box.green:hover {
     background-color: rgb(70, 186, 0);
 }
 
-.theme-box.purple {
+.theme-box.purple:hover {
     background-color: rgb(203, 141, 207);
 }
 
-.theme-box.yellow {
+.theme-box.yellow:hover {
     background-color: rgb(255, 223, 8);
+    color: black;
 }

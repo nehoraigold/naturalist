@@ -1,9 +1,9 @@
 //region imports
 import * as React from "react";
-import {observer, inject} from "mobx-react";
+import { observer, inject } from "mobx-react";
 import "../css/TopMenu.css";
-import {Link} from "react-router-dom";
-import {Theme} from "../types/enums/Theme";
+import { Link } from "react-router-dom";
+import { Theme } from "../types/enums/Theme";
 
 //endregion
 
@@ -28,10 +28,10 @@ class TopMenu extends React.Component<any, any> {
 
     renderThemeBoxes(): any {
         return Object.keys(Theme).map((theme: string) =>
-            <div key={theme}
-                 onClick={this.changeTheme}
-                 className={`theme-box ${theme}`}
-            />);
+            <div key={`${theme}-option`} className={`theme-box ${theme}`} onClick={this.changeTheme}>
+                {theme.toString()}
+            </div>
+        );
     }
 
     render() {
@@ -43,15 +43,19 @@ class TopMenu extends React.Component<any, any> {
                         NaturaList
                     </Link>
                 </span>
-                {this.props.store.authenticated ?
-                    <a onClick={this.logout}>Logout</a> :
-                    <Link to={"/register"} className={"register"}>Sign up</Link>}
-                <div className='themes'>
-                    <span className='themes-label'> Themes </span>
-                    <div
-                        className='theme-boxes'>
-                        {this.renderThemeBoxes()}
-                    </div>
+                <div className="right-menu">
+                    {this.props.store.authenticated ?
+                        <a className={"logout menu-link"} onClick={this.logout}>Logout</a> :
+                        <React.Fragment>
+                            <Link to={"/register"} className={"register menu-link"}>Sign up</Link>
+                            <Link to={"/login"} className={"login menu-link"}>Log in</Link>
+                        </React.Fragment>}
+                    <span className='theme-submenu'>
+                        <span className='themes-label menu-link'>Themes</span>
+                        <div className='themes'>
+                            {this.renderThemeBoxes()}
+                        </div>
+                    </span>
                 </div>
             </div>
         )
