@@ -28,8 +28,10 @@ export default class ListItemStore implements IListItem {
         return listItemObject;
     }
 
+    //TODO: Make fetch requests in component, not in store!
     @action.bound
     saveItemToDatabase() {
+        console.log("SAVING...", this.id);
         fetch(`http://localhost:${config.server.port}/item/${this.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},

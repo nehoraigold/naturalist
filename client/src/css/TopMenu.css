@@ -18,6 +18,10 @@
     letter-spacing: 2px;
 }
 
+.top-menu .logo:hover {
+    text-decoration: none;
+}
+
 .top-menu a {
     color: white;
     cursor: pointer;

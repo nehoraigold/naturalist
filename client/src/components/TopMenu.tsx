@@ -23,7 +23,6 @@ class TopMenu extends React.Component<any, any> {
     }
 
     logout() {
-        //TODO: actually implement this
         this.props.store.logoutAndWipeData();
     }
 
@@ -39,10 +38,10 @@ class TopMenu extends React.Component<any, any> {
         return (
             <div className='top-menu'>
                 <span className='header'>
-                    <span className='logo'>
+                    <Link to="/" className='logo'>
                         <span className="fas fa-leaf"/>
                         NaturaList
-                    </span>
+                    </Link>
                 </span>
                 {this.props.store.authenticated ?
                     <a onClick={this.logout}>Logout</a> :
