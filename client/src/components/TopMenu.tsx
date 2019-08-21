@@ -3,6 +3,7 @@ import * as React from "react";
 import { observer, inject } from "mobx-react";
 import "../css/TopMenu.css";
 import { Link } from "react-router-dom";
+// @ts-ignore
 import { Theme } from "../types/enums/Theme";
 
 //endregion
@@ -50,12 +51,12 @@ class TopMenu extends React.Component<any, any> {
                             <Link to={"/register"} className={"register menu-link"}>Sign up</Link>
                             <Link to={"/login"} className={"login menu-link"}>Log in</Link>
                         </React.Fragment>}
-                    <span className='theme-submenu'>
+                    <div className='theme-submenu'>
                         <span className='themes-label menu-link'>Themes</span>
                         <div className='themes'>
                             {this.renderThemeBoxes()}
                         </div>
-                    </span>
+                    </div>
                 </div>
             </div>
         )

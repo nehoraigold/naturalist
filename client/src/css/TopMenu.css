@@ -45,7 +45,9 @@
 
 .theme-submenu {
     display: inline-block;
+    position: relative;
     height: 40px;
+    width: auto;
 }
 
 .themes-label {
@@ -56,13 +58,16 @@
     display: block;
     opacity: 1;
     pointer-events: auto;
-    z-index: auto;
+    z-index: 99999999;
 }
 
 .themes {
-    position: relative;
-    top: -10px;
-    padding-top: 10px;
+    z-index: 99999999;
+    position: absolute;
+    width: 100%;
+    top: 30px;
+    right: 0;
+    padding: 10px 5px 0 5px;
     text-align: center;
     opacity: 0;
     pointer-events: none;
